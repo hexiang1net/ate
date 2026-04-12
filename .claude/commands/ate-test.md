@@ -26,6 +26,7 @@ type: command
    - 通过 `git commit` 提交更改，提交信息格式：`test: ate test cases for <描述>`
    - 通过 `git push` 推送到远程仓库 `https://github.com/hexiang1net/ate.git`
 2. 向用户报告执行结果
+  - 成功：提交的文件列表
 
 ## 注意事项
 
