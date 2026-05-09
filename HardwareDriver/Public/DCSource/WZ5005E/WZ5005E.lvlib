@@ -4,6 +4,7 @@
 	<Property Name="NI.Lib.SourceVersion" Type="Int">352354304</Property>
 	<Property Name="NI.Lib.Version" Type="Str">1.0.0.0</Property>
 	<Property Name="NI.LV.All.SourceOnly" Type="Bool">false</Property>
+	<Property Name="NI.SortType" Type="Int">3</Property>
 	<Item Name="Private" Type="Folder">
 		<Property Name="NI.LibItem.Scope" Type="Int">2</Property>
 		<Item Name="Com Read.vi" Type="VI" URL="../Private/Com Read.vi"/>
@@ -14,9 +15,12 @@
 		<Item Name="U8ArrayToHexString.vi" Type="VI" URL="../Private/U8ArrayToHexString.vi"/>
 		<Item Name="校验和.vi" Type="VI" URL="../Private/校验和.vi"/>
 	</Item>
-	<Item Name="WZ5005E-Config.vi" Type="VI" URL="../WZ5005E-Config.vi"/>
-	<Item Name="WZ5005E-ONOFF.vi" Type="VI" URL="../WZ5005E-ONOFF.vi"/>
-	<Item Name="WZ5005E-Read.vi" Type="VI" URL="../WZ5005E-Read.vi"/>
-	<Item Name="WZ5005E-Remote Local.vi" Type="VI" URL="../WZ5005E-Remote Local.vi"/>
-	<Item Name="WZ5005E-Set Addr.vi" Type="VI" URL="../WZ5005E-Set Addr.vi"/>
+	<Item Name="Public" Type="Folder">
+		<Property Name="NI.LibItem.Scope" Type="Int">1</Property>
+		<Item Name="WZ5005E-Read.vi" Type="VI" URL="../WZ5005E-Read.vi"/>
+		<Item Name="WZ5005E-Remote Local.vi" Type="VI" URL="../WZ5005E-Remote Local.vi"/>
+		<Item Name="WZ5005E-Set Addr.vi" Type="VI" URL="../WZ5005E-Set Addr.vi"/>
+		<Item Name="WZ5005E-Config.vi" Type="VI" URL="../WZ5005E-Config.vi"/>
+		<Item Name="WZ5005E-ONOFF.vi" Type="VI" URL="../WZ5005E-ONOFF.vi"/>
+	</Item>
 </Library>
