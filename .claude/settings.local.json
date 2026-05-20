@@ -4,5 +4,15 @@
       "Bash(python:*)",
       "Bash(pip install:*)"
     ]
+  },
+  "mcpServers": {
+    "teststand-2012": {
+      "type": "stdio",
+      "command": "D:\\Python\\Python310-32\\python.exe",
+      "args": ["E:\\agent\\ate\\teststand-2012-mcp\\mcp_server.py"],
+      "env": {
+        "PYTHONIOENCODING": "utf-8"
+      }
+    }
   }
 }
