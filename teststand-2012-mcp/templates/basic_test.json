@@ -1,0 +1,26 @@
+{
+  "name": "基础测试模板",
+  "description": "包含 Setup/Main/Cleanup 完整结构的基础测试序列模板",
+  "variables": {
+    "file_globals": [
+      {"name": "SerialNumber", "type": "String", "default": ""}
+    ],
+    "locals": []
+  },
+  "sequence": "MainSequence",
+  "steps": {
+    "setup": [
+      {"type": "MessagePopup", "name": "提示开始", "properties": {"MessageExpr": "\"开始测试...\""}},
+      {"type": "Wait", "name": "预热等待", "properties": {"TimeExpr": "1"}}
+    ],
+    "main": [
+      {"type": "NumericLimitTest", "name": "电压测试", "properties": {"Limits.Low": "4.5", "Limits.High": "5.5"}},
+      {"type": "NumericLimitTest", "name": "电流测试", "properties": {"Limits.Low": "0.1", "Limits.High": "2.0"}},
+      {"type": "StringValueTest", "name": "型号验证", "properties": {"Limits.String": "ABC-123"}}
+    ],
+    "cleanup": [
+      {"type": "Statement", "name": "清理", "properties": {"Expr": "\"清理完成\""}},
+      {"type": "MessagePopup", "name": "提示结束", "properties": {"MessageExpr": "\"测试完成\""}}
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "teststand-2012": {
+      "command": "D:\\Python\\Python310-32\\python.exe",
+      "args": ["E:\\agent\\ate\\teststand-2012-mcp\\mcp_server.py"],
+      "type": "stdio",
+      "env": {
+        "PYTHONIOENCODING": "utf-8"
+      }
+    }
+  }
+}
