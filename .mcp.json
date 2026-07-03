@@ -7,6 +7,18 @@
       "env": {
         "PYTHONIOENCODING": "utf-8"
       }
-    }
+    },
+    "jeecg-mysql": {
+      "command": "npx",
+      "args": ["-y", "@benborla29/mcp-server-mysql"],
+      "env": {
+        "MYSQL_HOST": "10.16.9.91",
+        "MYSQL_PORT": "3306",
+        "MYSQL_USER": "jeecgboottest",
+        "MYSQL_PASS": "Test@123",
+        "MYSQL_DB": "jeecg-boot"
+      }
+    }	
+
   }
 }

@@ -1,0 +1,46 @@
+2026-06-30 10:56:49,871 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.12.90.65:5050
+2026-06-30 10:56:49,872 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-06-30 10:58:39,430 [INFO] Thread-1 (process_request_thread) _start_claude_task 入参: excel_path=100-A18036D9-V1.0_report_v4_b6c8c72e12d54f189faa3f4f56249693.xlsx, seq_name=100-A18036D9-V1.0_report_v4_b6c8c72e12d54f189faa3f4f56249693.seq, output_file=100-A18036D9-V1.0_report_v4_b6c8c72e12d54f189faa3f4f56249693.json, log_id=b6c8c72e12d54f189faa3f4f56249693
+2026-06-30 10:58:39,435 [INFO] Thread-2 (run_claude) run_claude 入参: task_id=720225bb, prompt=e:\agent\ate\100-A18036D9-V1.0_report_v4_b6c8c72e12d54f189faa3f4f56249693.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A18036D9-V1.0_report_v4_b6c8c72e12d54f189faa3f4f56249693.seq ,保存到当前目录即可, output_file=e:\agent\ate\100-A18036D9-V1.0_report_v4_b6c8c72e12d54f189faa3f4f56249693.json, log_id=b6c8c72e12d54f189faa3f4f56249693
+2026-06-30 10:58:39,435 [INFO] Thread-1 (process_request_thread) _start_claude_task 出参: task_id=720225bb
+2026-06-30 10:58:39,442 [INFO] Thread-1 (process_request_thread) 10.12.17.93 - - [30/Jun/2026 10:58:39] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-06-30 10:58:39,467 [INFO] Thread-2 (run_claude) run_claude 进程已启动: task_id=720225bb, pid=79848
+2026-06-30 11:10:06,677 [INFO] Thread-2 (run_claude) run_claude 执行完毕: task_id=720225bb, returncode=0
+2026-06-30 11:10:06,678 [INFO] Thread-2 (run_claude) _update_log_end 入参: log_id=b6c8c72e12d54f189faa3f4f56249693
+2026-06-30 11:10:06,807 [INFO] Thread-2 (run_claude) _update_log_end 成功: log_id=b6c8c72e12d54f189faa3f4f56249693, end_time=2026-06-30 11:10:06, status=10
+2026-06-30 13:05:10,077 [INFO] Thread-4 (process_request_thread) _start_claude_task 入参: excel_path=100-A18036D9-V1.0_report_v4_1d970f6f935f46b5b7aa5cb3a32ee1bc.xlsx, seq_name=100-A18036D9-V1.0_report_v4_1d970f6f935f46b5b7aa5cb3a32ee1bc.seq, output_file=100-A18036D9-V1.0_report_v4_1d970f6f935f46b5b7aa5cb3a32ee1bc.json, log_id=1d970f6f935f46b5b7aa5cb3a32ee1bc
+2026-06-30 13:05:10,082 [INFO] Thread-5 (run_claude) run_claude 入参: task_id=01247ab9, prompt=e:\agent\ate\100-A18036D9-V1.0_report_v4_1d970f6f935f46b5b7aa5cb3a32ee1bc.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A18036D9-V1.0_report_v4_1d970f6f935f46b5b7aa5cb3a32ee1bc.seq ,保存到当前目录即可, output_file=e:\agent\ate\100-A18036D9-V1.0_report_v4_1d970f6f935f46b5b7aa5cb3a32ee1bc.json, log_id=1d970f6f935f46b5b7aa5cb3a32ee1bc
+2026-06-30 13:05:10,082 [INFO] Thread-4 (process_request_thread) _start_claude_task 出参: task_id=01247ab9
+2026-06-30 13:05:10,086 [INFO] Thread-4 (process_request_thread) 10.12.17.93 - - [30/Jun/2026 13:05:10] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-06-30 13:05:10,121 [INFO] Thread-5 (run_claude) run_claude 进程已启动: task_id=01247ab9, pid=23364
+2026-06-30 13:58:53,544 [WARNING] Thread-5 (run_claude) run_claude 超时: task_id=01247ab9, timeout=1800s
+2026-06-30 13:58:53,636 [INFO] Thread-5 (run_claude) _update_log_end 入参: log_id=1d970f6f935f46b5b7aa5cb3a32ee1bc
+2026-06-30 13:58:54,136 [INFO] Thread-5 (run_claude) _update_log_end 成功: log_id=1d970f6f935f46b5b7aa5cb3a32ee1bc, end_time=2026-06-30 13:58:53, status=10
+2026-07-01 08:34:30,464 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.12.90.65:5050
+2026-07-01 08:34:30,466 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-01 08:41:23,089 [INFO] Thread-1 (process_request_thread) _start_claude_task 入参: excel_path=100-A18036D9-V1.0_report_v5_008bc2112a944c1281b252a91fd1eda4.xlsx, seq_name=100-A18036D9-V1.0_report_v5_008bc2112a944c1281b252a91fd1eda4.seq, output_file=100-A18036D9-V1.0_report_v5_008bc2112a944c1281b252a91fd1eda4.json, log_id=008bc2112a944c1281b252a91fd1eda4
+2026-07-01 08:41:23,096 [INFO] Thread-2 (run_claude) run_claude 入参: task_id=04dc8cdc, prompt=e:\agent\ate\100-A18036D9-V1.0_report_v5_008bc2112a944c1281b252a91fd1eda4.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A18036D9-V1.0_report_v5_008bc2112a944c1281b252a91fd1eda4.seq ,保存到当前目录即可, output_file=e:\agent\ate\100-A18036D9-V1.0_report_v5_008bc2112a944c1281b252a91fd1eda4.json, log_id=008bc2112a944c1281b252a91fd1eda4, excel_file=e:\agent\ate\100-A18036D9-V1.0_report_v5_008bc2112a944c1281b252a91fd1eda4.xlsx, seq_name=100-A18036D9-V1.0_report_v5_008bc2112a944c1281b252a91fd1eda4.seq
+2026-07-01 08:41:23,096 [INFO] Thread-1 (process_request_thread) _start_claude_task 出参: task_id=04dc8cdc
+2026-07-01 08:41:23,108 [INFO] Thread-1 (process_request_thread) 10.12.17.93 - - [01/Jul/2026 08:41:23] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-01 08:41:23,195 [INFO] Thread-2 (run_claude) run_claude 进程已启动: task_id=04dc8cdc, pid=74908
+2026-07-01 08:51:12,966 [INFO] Thread-2 (run_claude) run_claude 执行完毕: task_id=04dc8cdc, returncode=0
+2026-07-01 08:51:12,966 [INFO] Thread-2 (run_claude) _update_log_end 入参: log_id=008bc2112a944c1281b252a91fd1eda4
+2026-07-01 08:51:13,063 [INFO] Thread-2 (run_claude) _update_log_end 成功: log_id=008bc2112a944c1281b252a91fd1eda4, end_time=2026-07-01 08:51:12, status=10
+2026-07-01 08:51:13,066 [INFO] Thread-2 (run_claude) _git_commit_files 开始: log_id=008bc2112a944c1281b252a91fd1eda4, files=[100-A18036D9-V1.0_report_v5_008bc2112a944c1281b252a91fd1eda4.json, 100-A18036D9-V1.0_report_v5_008bc2112a944c1281b252a91fd1eda4.seq, 100-A18036D9-V1.0_report_v5_008bc2112a944c1281b252a91fd1eda4.xlsx], git_output=e:\agent\ate\output_stream_github.json
+2026-07-01 08:53:16,143 [INFO] Thread-2 (run_claude) _git_commit_files 成功: log_id=008bc2112a944c1281b252a91fd1eda4
+2026-07-02 11:22:08,344 [INFO] Thread-6 (process_request_thread) _start_claude_task 入参: excel_path=100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.xlsx, seq_name=100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.seq, output_file=100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.json, log_id=22694a66f0d3421bbaa7e9d3d5a2e782
+2026-07-02 11:22:08,353 [INFO] Thread-7 (run_claude) run_claude 入参: task_id=fbd8b153, prompt=e:\agent\ate\100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.seq ,保存到当前目录即可, output_file=e:\agent\ate\100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.json, log_id=22694a66f0d3421bbaa7e9d3d5a2e782, excel_file=e:\agent\ate\100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.xlsx, seq_name=100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.seq
+2026-07-02 11:22:08,353 [INFO] Thread-6 (process_request_thread) _start_claude_task 出参: task_id=fbd8b153
+2026-07-02 11:22:08,361 [INFO] Thread-6 (process_request_thread) 10.12.17.93 - - [02/Jul/2026 11:22:08] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-02 11:22:08,444 [INFO] Thread-7 (run_claude) run_claude 进程已启动: task_id=fbd8b153, pid=54300
+2026-07-02 11:28:46,221 [INFO] Thread-7 (run_claude) run_claude 执行完毕: task_id=fbd8b153, returncode=0
+2026-07-02 11:28:46,221 [INFO] Thread-7 (run_claude) _update_log_end 入参: log_id=22694a66f0d3421bbaa7e9d3d5a2e782
+2026-07-02 11:28:46,310 [INFO] Thread-7 (run_claude) _update_log_end 成功: log_id=22694a66f0d3421bbaa7e9d3d5a2e782, end_time=2026-07-02 11:28:46, status=10
+2026-07-02 11:28:46,312 [INFO] Thread-7 (run_claude) _git_commit_files 开始: log_id=22694a66f0d3421bbaa7e9d3d5a2e782, files=[100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.json, 100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.seq, 100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.xlsx], git_output=e:\agent\ate\output_stream_github.json
+2026-07-02 11:30:31,110 [INFO] Thread-7 (run_claude) _git_commit_files 成功: log_id=22694a66f0d3421bbaa7e9d3d5a2e782
