@@ -2,14 +2,38 @@
   "permissions": {
     "allow": [
       "Bash(python:*)",
-      "Bash(pip install:*)"
+      "Bash(pip install:*)",
+      "Read(//d//**)",
+      "Read(//d/Python/**)",
+      "WebSearch",
+      "Bash(curl *)",
+      "Bash(/d/Python/python-3.10.11-x86.exe /quiet TargetDir=D:\\\\Python\\\\Python310-32 InstallAllUsers=1 PrependPath=0 Include_test=0)",
+      "Bash(echo \"Exit code: $?\")",
+      "Bash(/d/Python/Python310-32/python.exe --version)",
+      "Bash(cmd.exe /c \"D:\\\\\\\\Python\\\\\\\\python-3.10.11-x86.exe /quiet TargetDir=D:\\\\\\\\Python\\\\\\\\Python310-32 InstallAllUsers=1 PrependPath=0 Include_test=0\")",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(/d/Python/Python310-32/python.exe *)",
+      "Bash(D:/Python/Python310-32/python.exe *)",
+      "Bash(ls -d /c/Python*/)",
+      "Bash(where python *)",
+      "Bash(where python3 *)",
+      "Read(//c/msys64/mingw64/**)",
+      "Read(//c/msys64/usr/**)",
+      "Read(//c/msys64/mingw32/**)",
+      "Read(//c/Users/Administrator/**)",
+      "Bash(reg query *)",
+      "Bash(py *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
     ]
   },
   "mcpServers": {
     "teststand-2012": {
       "type": "stdio",
       "command": "D:\\Python\\Python310-32\\python.exe",
-      "args": ["E:\\agent\\ate\\teststand-2012-mcp\\mcp_server.py"],
+      "args": [
+        "E:\\agent\\ate\\teststand-2012-mcp\\mcp_server.py"
+      ],
       "env": {
         "PYTHONIOENCODING": "utf-8"
       }

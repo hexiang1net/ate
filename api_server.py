@@ -1,29 +1,36 @@
-"""POST 接口: 触发 claude 命令生成 TestStand seq 文件。
+"""POST 接口: Excel → TestStand seq 文件转换。
 
-启动:  pip install flask pymysql && python api_server.py
+启动:  pip install flask pymysql openpyxl && python api_server.py
 调用:  curl -X POST http://localhost:5050/api/run
       curl -X POST http://localhost:5050/api/addLog -H "Content-Type: application/json" -d "{\"plan_id\":\"xxx\",\"create_by\":\"admin\"}"
 查询:  curl http://localhost:5050/api/status/<task_id>
 """
 
 import logging
+import os
 import re
 import subprocess
+import sys
 import threading
 import uuid
-import os
 from datetime import datetime
 from typing import Any
 
 import pymysql
 import requests
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
+
+# 添加 excel_to_seq 所在目录到 sys.path
+_EXCEL_TO_SEQ_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "teststand-2012-mcp")
+if _EXCEL_TO_SEQ_DIR not in sys.path:
+    sys.path.insert(0, _EXCEL_TO_SEQ_DIR)
+
+from excel_to_seq import ExcelParser, SeqGenerator
 
 app = Flask(__name__)
 
-BASE_DIR = r"e:\agent\ate"
+BASE_DIR = r"D:\agent\ate"
 LOG_FILE = os.path.join(BASE_DIR, "api_server.log")
-TIMEOUT_SECONDS = 1800  # 30 分钟, 覆盖 20 分钟的 claude 执行
 
 # ---- 日志配置 ----
 logging.basicConfig(
@@ -56,19 +63,6 @@ tasks: dict[str, dict[str, Any]] = {}
 lock = threading.Lock()
 
 
-def _build_powershell_script(task_id: str, prompt: str, output_file: str) -> str:
-    """构建 .ps1 脚本, 解决引号嵌套和编码问题。使用 cmd /c 来保留 > 的原生重定向。"""
-    # 将 prompt 中的双引号转义
-    safe_prompt = prompt.replace('"', '`"')
-    # cmd /c 处理 > 重定向, 可避免 PowerShell 的 UTF-16 编码问题
-    ps_script = (
-        f'$cmd = \'claude -p "{safe_prompt}" --output-format stream-json --verbose --dangerously-skip-permissions > "{output_file}"\';'
-        f"\n"
-        f"cmd /c $cmd"
-    )
-    return ps_script
-
-
 def _update_log_end(log_id: str) -> None:
     """更新 ate_exe_log 的 end_time 和 status。"""
     logger.info("_update_log_end 入参: log_id=%s", log_id)
@@ -89,117 +83,65 @@ def _update_log_end(log_id: str) -> None:
         conn.close()
 
 
-def _git_commit_files(excel_file: str, seq_name: str, output_file: str, log_id: str) -> None:
-    """提交 3 个文件到 GitHub。"""
-    git_output = os.path.join(BASE_DIR, "output_stream_github.json")
-    prompt = (
-        f"提交这3个文件到github "
-        f"{{{os.path.basename(output_file)}}} "
-        f"{{{seq_name}}} "
-        f"{{{os.path.basename(excel_file)}}}"
-    )
-    logger.info(
-        "_git_commit_files 开始: log_id=%s, files=[%s, %s, %s], git_output=%s",
-        log_id, os.path.basename(output_file), seq_name, os.path.basename(excel_file), git_output,
-    )
-    ps_script = _build_powershell_script("git", prompt, git_output)
+def _git_commit_files(seq_name: str, log_id: str) -> None:
+    """提交 seq 文件到 GitHub (直接使用 git 命令)."""
+    logger.info("_git_commit_files 开始: seq_name=%s, log_id=%s", seq_name, log_id)
     try:
+        subprocess.run(["git", "add", seq_name], cwd=BASE_DIR, capture_output=True, timeout=30)
         result = subprocess.run(
-            [
-                "powershell",
-                "-NoProfile",
-                "-ExecutionPolicy", "Bypass",
-                "-Command", ps_script,
-            ],
-            cwd=BASE_DIR,
-            capture_output=True,
-            timeout=TIMEOUT_SECONDS,
+            ["git", "commit", "-m", f"feat: 生成测试序列 {seq_name}"],
+            cwd=BASE_DIR, capture_output=True, timeout=30,
         )
         if result.returncode != 0:
-            stderr_tail = result.stderr.decode("utf-8", errors="replace")[-500:]
-            logger.error(
-                "_git_commit_files 失败: log_id=%s, returncode=%s, stderr=%s",
-                log_id, result.returncode, stderr_tail,
-            )
-        else:
-            logger.info("_git_commit_files 成功: log_id=%s", log_id)
-    except subprocess.TimeoutExpired:
-        logger.warning("_git_commit_files 超时: log_id=%s", log_id)
+            stderr_msg = result.stderr.decode("utf-8", errors="replace")
+            if "nothing to commit" in stderr_msg:
+                logger.info("_git_commit_files: 无变更需要提交")
+                return
+            logger.error("_git_commit_files 提交失败: %s", stderr_msg[-500:])
+            return
+        subprocess.run(["git", "push"], cwd=BASE_DIR, capture_output=True, timeout=60)
+        logger.info("_git_commit_files 成功: log_id=%s", log_id)
     except Exception:
         logger.exception("_git_commit_files 异常: log_id=%s", log_id)
 
 
-def run_claude(
+def run_excel_to_seq(
     task_id: str,
-    prompt: str,
-    output_file: str,
+    excel_path: str,
+    seq_name: str,
     log_id: str | None = None,
-    excel_file: str = "",
-    seq_name: str = "",
 ) -> None:
-    """在后台线程中执行 claude 命令, 最长等待 TIMEOUT_SECONDS 秒。"""
+    """在后台线程中执行 Excel → seq 转换。"""
     logger.info(
-        "run_claude 入参: task_id=%s, prompt=%s, output_file=%s, log_id=%s, excel_file=%s, seq_name=%s",
-        task_id, prompt, output_file, log_id, excel_file, seq_name,
+        "run_excel_to_seq 入参: task_id=%s, excel_path=%s, seq_name=%s, log_id=%s",
+        task_id, excel_path, seq_name, log_id,
     )
     with lock:
         tasks[task_id]["status"] = "running"
         tasks[task_id]["started_at"] = datetime.now().isoformat()
 
-    ps_script = _build_powershell_script(task_id, prompt, output_file)
-
-    process: subprocess.Popen | None = None
     try:
-        process = subprocess.Popen(
-            [
-                "powershell",
-                "-NoProfile",
-                "-ExecutionPolicy", "Bypass",
-                "-Command", ps_script,
-            ],
-            cwd=BASE_DIR,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.PIPE,
-        )
+        seq_path = os.path.join(BASE_DIR, seq_name)
+
+        # 解析 Excel
+        parser = ExcelParser()
+        test_cases, vi_params, variables = parser.parse(excel_path)
+        tasks[task_id]["test_case_count"] = len(test_cases)
+        logger.info("Excel 解析完成: task_id=%s, test_cases=%d, vi_params=%d, variables=%d",
+                     task_id, len(test_cases), len(vi_params), len(variables))
+
+        # 生成 seq 文件
+        generator = SeqGenerator()
+        generator.generate(test_cases, vi_params, seq_path, variables=variables)
+        logger.info("seq 文件已生成: task_id=%s, path=%s", task_id, seq_path)
 
         with lock:
-            tasks[task_id]["pid"] = process.pid
-
-        logger.info("run_claude 进程已启动: task_id=%s, pid=%s", task_id, process.pid)
-
-        try:
-            stdout, stderr = process.communicate(timeout=TIMEOUT_SECONDS)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.communicate()
-            logger.warning("run_claude 超时: task_id=%s, timeout=%ss", task_id, TIMEOUT_SECONDS)
-            with lock:
-                tasks[task_id]["status"] = "timeout"
-                tasks[task_id]["finished_at"] = datetime.now().isoformat()
-            if log_id:
-                _update_log_end(log_id)
-            return
-
-        rc = process.returncode
-        logger.info("run_claude 执行完毕: task_id=%s, returncode=%s", task_id, rc)
-        with lock:
-            tasks[task_id]["status"] = "completed" if rc == 0 else "failed"
-            tasks[task_id]["returncode"] = rc
+            tasks[task_id]["status"] = "completed"
+            tasks[task_id]["seq_path"] = seq_path
             tasks[task_id]["finished_at"] = datetime.now().isoformat()
-            if stderr:
-                stderr_tail = stderr.decode("utf-8", errors="replace")[-500:]
-                tasks[task_id]["stderr_tail"] = stderr_tail
-                if rc != 0:
-                    logger.error("run_claude 失败: task_id=%s, stderr=%s", task_id, stderr_tail)
 
-    except FileNotFoundError:
-        logger.exception("run_claude 命令未找到: task_id=%s", task_id)
-        with lock:
-            tasks[task_id]["status"] = "error"
-            tasks[task_id]["error"] = "powershell 或 claude 命令未找到"
-            tasks[task_id]["finished_at"] = datetime.now().isoformat()
     except Exception as exc:
-        logger.exception("run_claude 异常: task_id=%s, error=%s", task_id, exc)
+        logger.exception("run_excel_to_seq 异常: task_id=%s, error=%s", task_id, exc)
         with lock:
             tasks[task_id]["status"] = "error"
             tasks[task_id]["error"] = str(exc)
@@ -208,31 +150,19 @@ def run_claude(
     if log_id:
         _update_log_end(log_id)
 
-    # 提交 3 个文件到 GitHub
-    if log_id and excel_file and seq_name:
-        _git_commit_files(excel_file, seq_name, output_file, log_id)
-
 
 # ---------------------------------------------------------------------------
 # API 端点
 # ---------------------------------------------------------------------------
 
-def _start_claude_task(excel_path: str, seq_name: str, output_file: str, log_id: str = "") -> str:
-    """启动 claude 任务的通用逻辑, 返回 task_id。"""
+def _start_excel_to_seq_task(excel_path: str, seq_name: str, log_id: str = "") -> str:
+    """启动 Excel→seq 转换任务, 返回 task_id。"""
     logger.info(
-        "_start_claude_task 入参: excel_path=%s, seq_name=%s, output_file=%s, log_id=%s",
-        excel_path, seq_name, output_file, log_id,
+        "_start_excel_to_seq_task 入参: excel_path=%s, seq_name=%s, log_id=%s",
+        excel_path, seq_name, log_id,
     )
     if not os.path.isabs(excel_path):
         excel_path = os.path.join(BASE_DIR, excel_path)
-    if not os.path.isabs(output_file):
-        output_file = os.path.join(BASE_DIR, output_file)
-
-    prompt = (
-        f"{excel_path} 根据这个excel的内容 "
-        f"使用teststand mcp来生成一个seq文件，"
-        f"文件命名为{seq_name} ,保存到当前目录即可"
-    )
 
     task_id = str(uuid.uuid4())[:8]
 
@@ -240,48 +170,55 @@ def _start_claude_task(excel_path: str, seq_name: str, output_file: str, log_id:
         tasks[task_id] = {
             "id": task_id,
             "status": "pending",
-            "prompt": prompt,
-            "output_file": output_file,
+            "excel_path": excel_path,
+            "seq_name": seq_name,
             "log_id": log_id,
             "created_at": datetime.now().isoformat(),
         }
 
     thread = threading.Thread(
-        target=run_claude,
-        args=(task_id, prompt, output_file, log_id, excel_path, seq_name),
+        target=run_excel_to_seq,
+        args=(task_id, excel_path, seq_name, log_id),
         daemon=True,
     )
     thread.start()
-    logger.info("_start_claude_task 出参: task_id=%s", task_id)
+    logger.info("_start_excel_to_seq_task 出参: task_id=%s", task_id)
     return task_id
 
 
 @app.route("/api/run", methods=["POST"])
 def run() -> tuple[Any, int]:
-    """POST /api/run — 提交 claude 任务, 立即返回 task_id。
+    """POST /api/run — 接收 plan_id，下载 Excel 并启动转换任务。
 
-    可选 JSON body:
-      {
-        "excel_path":  "100-A18036D9-V1.0_report_v4.xlsx",
-        "seq_name":    "bbb.seq",
-        "output_file": "output_stream.json",
-        "log_id":      ""
-      }
+    JSON body: {"plan_id": "xxx"}
+    Response:  {"task_id": "xxx"}
     """
     data: dict[str, str] = request.get_json(silent=True) or {}
+    plan_id = data.get("plan_id", "")
 
-    excel_path = data.get("excel_path", "100-A18036D9-V1.0_report_v4.xlsx")
-    seq_name = data.get("seq_name", "bbb.seq")
-    output_file = data.get("output_file", "output_stream.json")
-    log_id = data.get("log_id", "")
+    if not plan_id:
+        return jsonify({"error": "plan_id 不能为空"}), 400
 
-    task_id = _start_claude_task(excel_path, seq_name, output_file, log_id)
+    # 下载 exportXls 文件
+    export_url = f"http://10.12.93.201:16060/jeecg-boot/ate/ateTestPlan/exportXls?id={plan_id}"
+    try:
+        resp = requests.get(export_url, timeout=30)
+        resp.raise_for_status()
+        cd = resp.headers.get("Content-Disposition", "")
+        match = re.search(r'filename[^;=\n]*=((["\']).*?\2|[^;\n]*)', cd)
+        original_name = match.group(1).strip(" \"'") if match else "export.xlsx"
+        base, ext = os.path.splitext(original_name)
+        file_name = f"{base}_{plan_id}{ext}"
+        file_path = os.path.join(BASE_DIR, file_name)
+        with open(file_path, "wb") as f:
+            f.write(resp.content)
+    except Exception as exc:
+        return jsonify({"error": f"下载 Excel 失败: {exc}"}), 500
 
-    return jsonify({
-        "task_id": task_id,
-        "status": "pending",
-        "message": "任务已提交，通过 GET /api/status/<task_id> 查询进度",
-    }), 202
+    seq_name = f"{base}_{plan_id}.seq"
+    task_id = _start_excel_to_seq_task(file_name, seq_name)
+
+    return jsonify({"task_id": task_id}), 202
 
 
 @app.route("/api/addLog", methods=["POST"])
@@ -322,7 +259,7 @@ def add_log() -> tuple[Any, int]:
         conn.close()
 
     # 下载 exportXls 文件到当前目录
-    export_url = f"http://10.12.17.93:8282/jeecg-boot/ate/ateTestPlan/exportXls?id={plan_id}"
+    export_url = f"http://10.12.93.201:16060/jeecg-boot/ate/ateTestPlan/exportXls?id={plan_id}"
     file_name = None
     try:
         resp = requests.get(export_url, timeout=30)
@@ -349,10 +286,9 @@ def add_log() -> tuple[Any, int]:
             "download_error": str(exc),
         }), 201
 
-    # 下载成功后自动提交 claude 任务
+    # 下载成功后自动提交 Excel→seq 转换任务
     seq_name = f"{base}_{log_id}.seq"
-    output_file = f"{base}_{log_id}.json"
-    task_id = _start_claude_task(file_name, seq_name, output_file, log_id)
+    task_id = _start_excel_to_seq_task(file_name, seq_name, log_id)
 
     return jsonify({
         "id": log_id,
@@ -361,6 +297,18 @@ def add_log() -> tuple[Any, int]:
         "file": file_name,
         "task_id": task_id,
     }), 201
+
+
+def _build_status_response(task: dict) -> dict:
+    """构建带文件信息的任务状态响应。"""
+    resp = dict(task)
+    if task.get("status") == "completed" and task.get("seq_path"):
+        seq_path = task["seq_path"]
+        if os.path.isfile(seq_path):
+            stat = os.stat(seq_path)
+            resp["fileName"] = os.path.basename(seq_path)
+            resp["fileSize"] = stat.st_size
+    return resp
 
 
 @app.route("/api/status/<task_id>", methods=["GET"])
@@ -372,14 +320,98 @@ def status(task_id: str) -> tuple[Any, int]:
     if task is None:
         return jsonify({"error": "任务不存在"}), 404
 
-    return jsonify(task), 200
+    return jsonify(_build_status_response(task)), 200
 
 
 @app.route("/api/tasks", methods=["GET"])
 def list_tasks() -> tuple[Any, int]:
     """GET /api/tasks — 列出所有任务记录。"""
     with lock:
-        return jsonify(list(tasks.values())), 200
+        return jsonify([_build_status_response(t) for t in tasks.values()]), 200
+
+
+@app.route("/api/files", methods=["GET"])
+def list_files():
+    """GET /api/files — 列出所有任务记录（内存 + 磁盘）。"""
+    with lock:
+        records = []
+        seen = set()
+        for t in tasks.values():
+            seq_path = t.get("seq_path", "")
+            rec = {
+                "taskId": t["id"],
+                "status": t["status"],
+                "createTime": t.get("created_at", ""),
+            }
+            if seq_path and os.path.isfile(seq_path):
+                rec["fileName"] = os.path.basename(seq_path)
+                rec["fileSize"] = os.path.getsize(seq_path)
+                seen.add(rec["fileName"])
+            else:
+                rec["fileName"] = ""
+                rec["fileSize"] = 0
+            records.append(rec)
+
+        # 兜底：扫描磁盘上未被任务记录覆盖的 .seq 文件
+        for f in sorted(os.listdir(BASE_DIR), reverse=True):
+            if f.endswith(".seq") and f not in seen:
+                fp = os.path.join(BASE_DIR, f)
+                records.append({
+                    "taskId": "",
+                    "status": "unknown",
+                    "createTime": datetime.fromtimestamp(os.path.getmtime(fp)).isoformat(),
+                    "fileName": f,
+                    "fileSize": os.path.getsize(fp),
+                })
+
+    return jsonify({"records": records}), 200
+
+
+@app.route("/api/files/<task_id>", methods=["GET"])
+def get_file(task_id: str) -> tuple[Any, int]:
+    """GET /api/files/<task_id> — 下载 .seq 文件二进制流。"""
+    with lock:
+        task = tasks.get(task_id)
+
+    if task is None:
+        return jsonify({"error": "任务不存在"}), 404
+
+    seq_path = task.get("seq_path")
+    if not seq_path or not os.path.isfile(seq_path):
+        return jsonify({"error": "文件尚未生成或已被删除"}), 404
+
+    return send_file(seq_path, as_attachment=True, download_name=os.path.basename(seq_path))
+
+
+@app.route("/api/push/<task_id>", methods=["POST"])
+def push_to_git(task_id: str) -> tuple[Any, int]:
+    """POST /api/push/<task_id> — 手动推送指定任务的 seq 文件到 GitHub。"""
+    with lock:
+        task = tasks.get(task_id)
+
+    if task is None:
+        return jsonify({"error": "任务不存在"}), 404
+
+    if task["status"] != "completed":
+        return jsonify({"error": f"任务未完成, 当前状态: {task['status']}"}), 400
+
+    seq_name = task.get("seq_name")
+    log_id = task.get("log_id", "")
+    seq_path = task.get("seq_path")
+
+    if not seq_name or not seq_path or not os.path.isfile(seq_path):
+        return jsonify({"error": "seq 文件不存在, 无法推送"}), 404
+
+    _git_commit_files(seq_name, log_id)
+
+    with lock:
+        tasks[task_id]["pushed"] = True
+        tasks[task_id]["pushed_at"] = datetime.now().isoformat()
+
+    return jsonify({
+        "success": True,
+        "message": f"已推送 {seq_name} 到 GitHub",
+    }), 200
 
 
 if __name__ == "__main__":

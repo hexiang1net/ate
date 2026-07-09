@@ -44,3 +44,397 @@
 2026-07-02 11:28:46,310 [INFO] Thread-7 (run_claude) _update_log_end 成功: log_id=22694a66f0d3421bbaa7e9d3d5a2e782, end_time=2026-07-02 11:28:46, status=10
 2026-07-02 11:28:46,312 [INFO] Thread-7 (run_claude) _git_commit_files 开始: log_id=22694a66f0d3421bbaa7e9d3d5a2e782, files=[100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.json, 100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.seq, 100-A18036D9-V1.0_report_v5_22694a66f0d3421bbaa7e9d3d5a2e782.xlsx], git_output=e:\agent\ate\output_stream_github.json
 2026-07-02 11:30:31,110 [INFO] Thread-7 (run_claude) _git_commit_files 成功: log_id=22694a66f0d3421bbaa7e9d3d5a2e782
+2026-07-03 15:16:42,748 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-03 15:16:42,751 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-03 15:17:14,636 [INFO] Thread-1 (process_request_thread) _start_claude_task 入参: excel_path=100-A18036D9-V1.0_report_v5_1b8fa6c6a9ae4cc586ca4eef926bc091.xlsx, seq_name=100-A18036D9-V1.0_report_v5_1b8fa6c6a9ae4cc586ca4eef926bc091.seq, output_file=100-A18036D9-V1.0_report_v5_1b8fa6c6a9ae4cc586ca4eef926bc091.json, log_id=1b8fa6c6a9ae4cc586ca4eef926bc091
+2026-07-03 15:17:14,646 [INFO] Thread-2 (run_claude) run_claude 入参: task_id=63e7af90, prompt=D:\agent\ate\100-A18036D9-V1.0_report_v5_1b8fa6c6a9ae4cc586ca4eef926bc091.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A18036D9-V1.0_report_v5_1b8fa6c6a9ae4cc586ca4eef926bc091.seq ,保存到当前目录即可, output_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_1b8fa6c6a9ae4cc586ca4eef926bc091.json, log_id=1b8fa6c6a9ae4cc586ca4eef926bc091, excel_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_1b8fa6c6a9ae4cc586ca4eef926bc091.xlsx, seq_name=100-A18036D9-V1.0_report_v5_1b8fa6c6a9ae4cc586ca4eef926bc091.seq
+2026-07-03 15:17:14,646 [INFO] Thread-1 (process_request_thread) _start_claude_task 出参: task_id=63e7af90
+2026-07-03 15:17:14,656 [INFO] Thread-1 (process_request_thread) 10.12.17.93 - - [03/Jul/2026 15:17:14] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-03 15:17:14,716 [INFO] Thread-2 (run_claude) run_claude 进程已启动: task_id=63e7af90, pid=7508
+2026-07-03 15:23:02,853 [INFO] Thread-2 (run_claude) run_claude 执行完毕: task_id=63e7af90, returncode=0
+2026-07-03 15:23:02,853 [INFO] Thread-2 (run_claude) _update_log_end 入参: log_id=1b8fa6c6a9ae4cc586ca4eef926bc091
+2026-07-03 15:23:02,904 [INFO] Thread-2 (run_claude) _update_log_end 成功: log_id=1b8fa6c6a9ae4cc586ca4eef926bc091, end_time=2026-07-03 15:23:02, status=10
+2026-07-03 15:23:02,906 [INFO] Thread-2 (run_claude) _git_commit_files 开始: log_id=1b8fa6c6a9ae4cc586ca4eef926bc091, files=[100-A18036D9-V1.0_report_v5_1b8fa6c6a9ae4cc586ca4eef926bc091.json, 100-A18036D9-V1.0_report_v5_1b8fa6c6a9ae4cc586ca4eef926bc091.seq, 100-A18036D9-V1.0_report_v5_1b8fa6c6a9ae4cc586ca4eef926bc091.xlsx], git_output=D:\agent\ate\output_stream_github.json
+2026-07-03 15:23:30,207 [INFO] Thread-2 (run_claude) _git_commit_files 成功: log_id=1b8fa6c6a9ae4cc586ca4eef926bc091
+2026-07-03 15:32:53,176 [INFO] Thread-6 (process_request_thread) _start_claude_task 入参: excel_path=100-A18036D9-V1.0_report_v5_568bc724f0364084a1db0b23e76bfb2f.xlsx, seq_name=100-A18036D9-V1.0_report_v5_568bc724f0364084a1db0b23e76bfb2f.seq, output_file=100-A18036D9-V1.0_report_v5_568bc724f0364084a1db0b23e76bfb2f.json, log_id=568bc724f0364084a1db0b23e76bfb2f
+2026-07-03 15:32:53,186 [INFO] Thread-7 (run_claude) run_claude 入参: task_id=7630eee0, prompt=D:\agent\ate\100-A18036D9-V1.0_report_v5_568bc724f0364084a1db0b23e76bfb2f.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A18036D9-V1.0_report_v5_568bc724f0364084a1db0b23e76bfb2f.seq ,保存到当前目录即可, output_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_568bc724f0364084a1db0b23e76bfb2f.json, log_id=568bc724f0364084a1db0b23e76bfb2f, excel_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_568bc724f0364084a1db0b23e76bfb2f.xlsx, seq_name=100-A18036D9-V1.0_report_v5_568bc724f0364084a1db0b23e76bfb2f.seq
+2026-07-03 15:32:53,186 [INFO] Thread-6 (process_request_thread) _start_claude_task 出参: task_id=7630eee0
+2026-07-03 15:32:53,186 [INFO] Thread-6 (process_request_thread) 10.12.17.93 - - [03/Jul/2026 15:32:53] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-03 15:32:53,253 [INFO] Thread-7 (run_claude) run_claude 进程已启动: task_id=7630eee0, pid=1036
+2026-07-03 15:39:17,602 [INFO] Thread-7 (run_claude) run_claude 执行完毕: task_id=7630eee0, returncode=0
+2026-07-03 15:39:17,644 [INFO] Thread-7 (run_claude) _update_log_end 入参: log_id=568bc724f0364084a1db0b23e76bfb2f
+2026-07-03 15:39:17,765 [INFO] Thread-7 (run_claude) _update_log_end 成功: log_id=568bc724f0364084a1db0b23e76bfb2f, end_time=2026-07-03 15:39:17, status=10
+2026-07-03 15:39:17,787 [INFO] Thread-7 (run_claude) _git_commit_files 开始: log_id=568bc724f0364084a1db0b23e76bfb2f, files=[100-A18036D9-V1.0_report_v5_568bc724f0364084a1db0b23e76bfb2f.json, 100-A18036D9-V1.0_report_v5_568bc724f0364084a1db0b23e76bfb2f.seq, 100-A18036D9-V1.0_report_v5_568bc724f0364084a1db0b23e76bfb2f.xlsx], git_output=D:\agent\ate\output_stream_github.json
+2026-07-03 15:39:48,540 [INFO] Thread-7 (run_claude) _git_commit_files 成功: log_id=568bc724f0364084a1db0b23e76bfb2f
+2026-07-03 15:49:50,466 [INFO] Thread-11 (process_request_thread) _start_claude_task 入参: excel_path=100-A18036D9-V1.0_report_v5_9faf591878914694ba444f813323d7f1.xlsx, seq_name=100-A18036D9-V1.0_report_v5_9faf591878914694ba444f813323d7f1.seq, output_file=100-A18036D9-V1.0_report_v5_9faf591878914694ba444f813323d7f1.json, log_id=9faf591878914694ba444f813323d7f1
+2026-07-03 15:49:50,476 [INFO] Thread-12 (run_claude) run_claude 入参: task_id=8bb6c294, prompt=D:\agent\ate\100-A18036D9-V1.0_report_v5_9faf591878914694ba444f813323d7f1.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A18036D9-V1.0_report_v5_9faf591878914694ba444f813323d7f1.seq ,保存到当前目录即可, output_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_9faf591878914694ba444f813323d7f1.json, log_id=9faf591878914694ba444f813323d7f1, excel_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_9faf591878914694ba444f813323d7f1.xlsx, seq_name=100-A18036D9-V1.0_report_v5_9faf591878914694ba444f813323d7f1.seq
+2026-07-03 15:49:50,476 [INFO] Thread-11 (process_request_thread) _start_claude_task 出参: task_id=8bb6c294
+2026-07-03 15:49:50,501 [INFO] Thread-11 (process_request_thread) 10.12.17.93 - - [03/Jul/2026 15:49:50] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-03 15:49:50,537 [INFO] Thread-12 (run_claude) run_claude 进程已启动: task_id=8bb6c294, pid=10144
+2026-07-03 15:50:12,826 [INFO] Thread-14 (process_request_thread) _start_claude_task 入参: excel_path=100-A18036D9-V1.0_report_v5_01636a4e19204dc387b055b043dbe9d8.xlsx, seq_name=100-A18036D9-V1.0_report_v5_01636a4e19204dc387b055b043dbe9d8.seq, output_file=100-A18036D9-V1.0_report_v5_01636a4e19204dc387b055b043dbe9d8.json, log_id=01636a4e19204dc387b055b043dbe9d8
+2026-07-03 15:50:12,836 [INFO] Thread-15 (run_claude) run_claude 入参: task_id=99ece56c, prompt=D:\agent\ate\100-A18036D9-V1.0_report_v5_01636a4e19204dc387b055b043dbe9d8.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A18036D9-V1.0_report_v5_01636a4e19204dc387b055b043dbe9d8.seq ,保存到当前目录即可, output_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_01636a4e19204dc387b055b043dbe9d8.json, log_id=01636a4e19204dc387b055b043dbe9d8, excel_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_01636a4e19204dc387b055b043dbe9d8.xlsx, seq_name=100-A18036D9-V1.0_report_v5_01636a4e19204dc387b055b043dbe9d8.seq
+2026-07-03 15:50:12,836 [INFO] Thread-14 (process_request_thread) _start_claude_task 出参: task_id=99ece56c
+2026-07-03 15:50:12,836 [INFO] Thread-14 (process_request_thread) 10.12.17.93 - - [03/Jul/2026 15:50:12] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-03 15:50:12,874 [INFO] Thread-15 (run_claude) run_claude 进程已启动: task_id=99ece56c, pid=6480
+2026-07-03 15:51:55,807 [INFO] Thread-17 (process_request_thread) _start_claude_task 入参: excel_path=100-A18036D9-V1.0_report_v5_0ebc1728705c49ebab928b255f68e03b.xlsx, seq_name=100-A18036D9-V1.0_report_v5_0ebc1728705c49ebab928b255f68e03b.seq, output_file=100-A18036D9-V1.0_report_v5_0ebc1728705c49ebab928b255f68e03b.json, log_id=0ebc1728705c49ebab928b255f68e03b
+2026-07-03 15:51:55,814 [INFO] Thread-18 (run_claude) run_claude 入参: task_id=cd2b865a, prompt=D:\agent\ate\100-A18036D9-V1.0_report_v5_0ebc1728705c49ebab928b255f68e03b.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A18036D9-V1.0_report_v5_0ebc1728705c49ebab928b255f68e03b.seq ,保存到当前目录即可, output_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_0ebc1728705c49ebab928b255f68e03b.json, log_id=0ebc1728705c49ebab928b255f68e03b, excel_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_0ebc1728705c49ebab928b255f68e03b.xlsx, seq_name=100-A18036D9-V1.0_report_v5_0ebc1728705c49ebab928b255f68e03b.seq
+2026-07-03 15:51:55,814 [INFO] Thread-17 (process_request_thread) _start_claude_task 出参: task_id=cd2b865a
+2026-07-03 15:51:55,818 [INFO] Thread-17 (process_request_thread) 10.12.17.93 - - [03/Jul/2026 15:51:55] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-03 15:51:55,847 [INFO] Thread-18 (run_claude) run_claude 进程已启动: task_id=cd2b865a, pid=9728
+2026-07-03 15:54:06,018 [INFO] Thread-15 (run_claude) run_claude 执行完毕: task_id=99ece56c, returncode=0
+2026-07-03 15:54:06,019 [INFO] Thread-15 (run_claude) _update_log_end 入参: log_id=01636a4e19204dc387b055b043dbe9d8
+2026-07-03 15:54:06,063 [INFO] Thread-15 (run_claude) _update_log_end 成功: log_id=01636a4e19204dc387b055b043dbe9d8, end_time=2026-07-03 15:54:06, status=10
+2026-07-03 15:54:06,065 [INFO] Thread-15 (run_claude) _git_commit_files 开始: log_id=01636a4e19204dc387b055b043dbe9d8, files=[100-A18036D9-V1.0_report_v5_01636a4e19204dc387b055b043dbe9d8.json, 100-A18036D9-V1.0_report_v5_01636a4e19204dc387b055b043dbe9d8.seq, 100-A18036D9-V1.0_report_v5_01636a4e19204dc387b055b043dbe9d8.xlsx], git_output=D:\agent\ate\output_stream_github.json
+2026-07-03 15:54:32,878 [INFO] Thread-15 (run_claude) _git_commit_files 成功: log_id=01636a4e19204dc387b055b043dbe9d8
+2026-07-03 15:54:44,417 [INFO] Thread-12 (run_claude) run_claude 执行完毕: task_id=8bb6c294, returncode=0
+2026-07-03 15:54:44,419 [INFO] Thread-12 (run_claude) _update_log_end 入参: log_id=9faf591878914694ba444f813323d7f1
+2026-07-03 15:54:44,473 [INFO] Thread-12 (run_claude) _update_log_end 成功: log_id=9faf591878914694ba444f813323d7f1, end_time=2026-07-03 15:54:44, status=10
+2026-07-03 15:54:44,473 [INFO] Thread-12 (run_claude) _git_commit_files 开始: log_id=9faf591878914694ba444f813323d7f1, files=[100-A18036D9-V1.0_report_v5_9faf591878914694ba444f813323d7f1.json, 100-A18036D9-V1.0_report_v5_9faf591878914694ba444f813323d7f1.seq, 100-A18036D9-V1.0_report_v5_9faf591878914694ba444f813323d7f1.xlsx], git_output=D:\agent\ate\output_stream_github.json
+2026-07-03 15:55:07,071 [INFO] Thread-12 (run_claude) _git_commit_files 成功: log_id=9faf591878914694ba444f813323d7f1
+2026-07-03 15:56:18,117 [INFO] Thread-18 (run_claude) run_claude 执行完毕: task_id=cd2b865a, returncode=0
+2026-07-03 15:56:18,118 [INFO] Thread-18 (run_claude) _update_log_end 入参: log_id=0ebc1728705c49ebab928b255f68e03b
+2026-07-03 15:56:18,163 [INFO] Thread-18 (run_claude) _update_log_end 成功: log_id=0ebc1728705c49ebab928b255f68e03b, end_time=2026-07-03 15:56:18, status=10
+2026-07-03 15:56:18,164 [INFO] Thread-18 (run_claude) _git_commit_files 开始: log_id=0ebc1728705c49ebab928b255f68e03b, files=[100-A18036D9-V1.0_report_v5_0ebc1728705c49ebab928b255f68e03b.json, 100-A18036D9-V1.0_report_v5_0ebc1728705c49ebab928b255f68e03b.seq, 100-A18036D9-V1.0_report_v5_0ebc1728705c49ebab928b255f68e03b.xlsx], git_output=D:\agent\ate\output_stream_github.json
+2026-07-03 15:56:40,912 [INFO] Thread-18 (run_claude) _git_commit_files 成功: log_id=0ebc1728705c49ebab928b255f68e03b
+2026-07-06 14:47:22,895 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-06 14:47:22,895 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-06 14:52:57,184 [INFO] Thread-1 (process_request_thread) _start_claude_task 入参: excel_path=100-A18036D9-V1.0_report_v5_0cca3bdfa2f24375800123f07f3112c0.xlsx, seq_name=100-A18036D9-V1.0_report_v5_0cca3bdfa2f24375800123f07f3112c0.seq, output_file=100-A18036D9-V1.0_report_v5_0cca3bdfa2f24375800123f07f3112c0.json, log_id=0cca3bdfa2f24375800123f07f3112c0
+2026-07-06 14:52:57,188 [INFO] Thread-2 (run_claude) run_claude 入参: task_id=514d50dd, prompt=D:\agent\ate\100-A18036D9-V1.0_report_v5_0cca3bdfa2f24375800123f07f3112c0.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A18036D9-V1.0_report_v5_0cca3bdfa2f24375800123f07f3112c0.seq ,保存到当前目录即可, output_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_0cca3bdfa2f24375800123f07f3112c0.json, log_id=0cca3bdfa2f24375800123f07f3112c0, excel_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_0cca3bdfa2f24375800123f07f3112c0.xlsx, seq_name=100-A18036D9-V1.0_report_v5_0cca3bdfa2f24375800123f07f3112c0.seq
+2026-07-06 14:52:57,189 [INFO] Thread-1 (process_request_thread) _start_claude_task 出参: task_id=514d50dd
+2026-07-06 14:52:57,195 [INFO] Thread-1 (process_request_thread) 10.12.17.93 - - [06/Jul/2026 14:52:57] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-06 14:52:57,299 [INFO] Thread-2 (run_claude) run_claude 进程已启动: task_id=514d50dd, pid=1508
+2026-07-06 14:55:14,232 [INFO] Thread-4 (process_request_thread) _start_claude_task 入参: excel_path=100-A18036D9-V1.0_report_v5_816f9ea423eb413cbc919102adb6bbd6.xlsx, seq_name=100-A18036D9-V1.0_report_v5_816f9ea423eb413cbc919102adb6bbd6.seq, output_file=100-A18036D9-V1.0_report_v5_816f9ea423eb413cbc919102adb6bbd6.json, log_id=816f9ea423eb413cbc919102adb6bbd6
+2026-07-06 14:55:14,240 [INFO] Thread-5 (run_claude) run_claude 入参: task_id=246c5bdb, prompt=D:\agent\ate\100-A18036D9-V1.0_report_v5_816f9ea423eb413cbc919102adb6bbd6.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A18036D9-V1.0_report_v5_816f9ea423eb413cbc919102adb6bbd6.seq ,保存到当前目录即可, output_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_816f9ea423eb413cbc919102adb6bbd6.json, log_id=816f9ea423eb413cbc919102adb6bbd6, excel_file=D:\agent\ate\100-A18036D9-V1.0_report_v5_816f9ea423eb413cbc919102adb6bbd6.xlsx, seq_name=100-A18036D9-V1.0_report_v5_816f9ea423eb413cbc919102adb6bbd6.seq
+2026-07-06 14:55:14,240 [INFO] Thread-4 (process_request_thread) _start_claude_task 出参: task_id=246c5bdb
+2026-07-06 14:55:14,271 [INFO] Thread-4 (process_request_thread) 10.12.17.93 - - [06/Jul/2026 14:55:14] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-06 14:55:14,298 [INFO] Thread-5 (run_claude) run_claude 进程已启动: task_id=246c5bdb, pid=9032
+2026-07-06 14:58:25,715 [INFO] Thread-2 (run_claude) run_claude 执行完毕: task_id=514d50dd, returncode=0
+2026-07-06 14:58:25,716 [INFO] Thread-2 (run_claude) _update_log_end 入参: log_id=0cca3bdfa2f24375800123f07f3112c0
+2026-07-06 14:58:25,755 [INFO] Thread-2 (run_claude) _update_log_end 成功: log_id=0cca3bdfa2f24375800123f07f3112c0, end_time=2026-07-06 14:58:25, status=10
+2026-07-06 14:58:25,758 [INFO] Thread-2 (run_claude) _git_commit_files 开始: log_id=0cca3bdfa2f24375800123f07f3112c0, files=[100-A18036D9-V1.0_report_v5_0cca3bdfa2f24375800123f07f3112c0.json, 100-A18036D9-V1.0_report_v5_0cca3bdfa2f24375800123f07f3112c0.seq, 100-A18036D9-V1.0_report_v5_0cca3bdfa2f24375800123f07f3112c0.xlsx], git_output=D:\agent\ate\output_stream_github.json
+2026-07-06 14:58:51,243 [INFO] Thread-2 (run_claude) _git_commit_files 成功: log_id=0cca3bdfa2f24375800123f07f3112c0
+2026-07-06 14:59:27,563 [INFO] Thread-5 (run_claude) run_claude 执行完毕: task_id=246c5bdb, returncode=0
+2026-07-06 14:59:27,564 [INFO] Thread-5 (run_claude) _update_log_end 入参: log_id=816f9ea423eb413cbc919102adb6bbd6
+2026-07-06 14:59:27,611 [INFO] Thread-5 (run_claude) _update_log_end 成功: log_id=816f9ea423eb413cbc919102adb6bbd6, end_time=2026-07-06 14:59:27, status=10
+2026-07-06 14:59:27,613 [INFO] Thread-5 (run_claude) _git_commit_files 开始: log_id=816f9ea423eb413cbc919102adb6bbd6, files=[100-A18036D9-V1.0_report_v5_816f9ea423eb413cbc919102adb6bbd6.json, 100-A18036D9-V1.0_report_v5_816f9ea423eb413cbc919102adb6bbd6.seq, 100-A18036D9-V1.0_report_v5_816f9ea423eb413cbc919102adb6bbd6.xlsx], git_output=D:\agent\ate\output_stream_github.json
+2026-07-06 14:59:53,332 [INFO] Thread-5 (run_claude) _git_commit_files 成功: log_id=816f9ea423eb413cbc919102adb6bbd6
+2026-07-08 09:16:33,975 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-08 09:16:33,975 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-08 11:13:08,297 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-08 11:13:08,297 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-08 11:21:42,151 [INFO] Thread-11 (process_request_thread) _start_claude_task 入参: excel_path=100-A2320A-PC-V1.0_ATE_TestCases_v1_bd0229b5c2524c909c9f59d74f4600e9.xlsx, seq_name=100-A2320A-PC-V1.0_ATE_TestCases_v1_bd0229b5c2524c909c9f59d74f4600e9.seq, output_file=100-A2320A-PC-V1.0_ATE_TestCases_v1_bd0229b5c2524c909c9f59d74f4600e9.json, log_id=bd0229b5c2524c909c9f59d74f4600e9
+2026-07-08 11:21:42,151 [INFO] Thread-12 (run_claude) run_claude 入参: task_id=461f3bfa, prompt=D:\agent\ate\100-A2320A-PC-V1.0_ATE_TestCases_v1_bd0229b5c2524c909c9f59d74f4600e9.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A2320A-PC-V1.0_ATE_TestCases_v1_bd0229b5c2524c909c9f59d74f4600e9.seq ,保存到当前目录即可, output_file=D:\agent\ate\100-A2320A-PC-V1.0_ATE_TestCases_v1_bd0229b5c2524c909c9f59d74f4600e9.json, log_id=bd0229b5c2524c909c9f59d74f4600e9, excel_file=D:\agent\ate\100-A2320A-PC-V1.0_ATE_TestCases_v1_bd0229b5c2524c909c9f59d74f4600e9.xlsx, seq_name=100-A2320A-PC-V1.0_ATE_TestCases_v1_bd0229b5c2524c909c9f59d74f4600e9.seq
+2026-07-08 11:21:42,151 [INFO] Thread-11 (process_request_thread) _start_claude_task 出参: task_id=461f3bfa
+2026-07-08 11:21:42,160 [INFO] Thread-11 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 11:21:42] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 11:21:42,233 [INFO] Thread-12 (run_claude) run_claude 进程已启动: task_id=461f3bfa, pid=6456
+2026-07-08 11:28:37,348 [INFO] Thread-12 (run_claude) run_claude 执行完毕: task_id=461f3bfa, returncode=0
+2026-07-08 11:28:37,350 [INFO] Thread-12 (run_claude) _update_log_end 入参: log_id=bd0229b5c2524c909c9f59d74f4600e9
+2026-07-08 11:28:37,394 [INFO] Thread-12 (run_claude) _update_log_end 成功: log_id=bd0229b5c2524c909c9f59d74f4600e9, end_time=2026-07-08 11:28:37, status=10
+2026-07-08 11:28:37,396 [INFO] Thread-12 (run_claude) _git_commit_files 开始: log_id=bd0229b5c2524c909c9f59d74f4600e9, files=[100-A2320A-PC-V1.0_ATE_TestCases_v1_bd0229b5c2524c909c9f59d74f4600e9.json, 100-A2320A-PC-V1.0_ATE_TestCases_v1_bd0229b5c2524c909c9f59d74f4600e9.seq, 100-A2320A-PC-V1.0_ATE_TestCases_v1_bd0229b5c2524c909c9f59d74f4600e9.xlsx], git_output=D:\agent\ate\output_stream_github.json
+2026-07-08 11:28:57,588 [INFO] Thread-12 (run_claude) _git_commit_files 成功: log_id=bd0229b5c2524c909c9f59d74f4600e9
+2026-07-08 11:30:53,589 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-08 11:30:53,589 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-08 11:31:14,301 [INFO] Thread-16 (process_request_thread) _start_claude_task 入参: excel_path=100-A2320A-PC-V1.0_ATE_TestCases_v1_056486c5643543d3b53a8649d2502b08.xlsx, seq_name=100-A2320A-PC-V1.0_ATE_TestCases_v1_056486c5643543d3b53a8649d2502b08.seq, output_file=100-A2320A-PC-V1.0_ATE_TestCases_v1_056486c5643543d3b53a8649d2502b08.json, log_id=056486c5643543d3b53a8649d2502b08
+2026-07-08 11:31:14,301 [INFO] Thread-17 (run_claude) run_claude 入参: task_id=21647dee, prompt=D:\agent\ate\100-A2320A-PC-V1.0_ATE_TestCases_v1_056486c5643543d3b53a8649d2502b08.xlsx 根据这个excel的内容 使用teststand mcp来生成一个seq文件，文件命名为100-A2320A-PC-V1.0_ATE_TestCases_v1_056486c5643543d3b53a8649d2502b08.seq ,保存到当前目录即可, output_file=D:\agent\ate\100-A2320A-PC-V1.0_ATE_TestCases_v1_056486c5643543d3b53a8649d2502b08.json, log_id=056486c5643543d3b53a8649d2502b08, excel_file=D:\agent\ate\100-A2320A-PC-V1.0_ATE_TestCases_v1_056486c5643543d3b53a8649d2502b08.xlsx, seq_name=100-A2320A-PC-V1.0_ATE_TestCases_v1_056486c5643543d3b53a8649d2502b08.seq
+2026-07-08 11:31:14,301 [INFO] Thread-16 (process_request_thread) _start_claude_task 出参: task_id=21647dee
+2026-07-08 11:31:14,311 [INFO] Thread-16 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 11:31:14] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 11:31:14,357 [INFO] Thread-17 (run_claude) run_claude 进程已启动: task_id=21647dee, pid=8340
+2026-07-08 12:01:20,716 [WARNING] Thread-17 (run_claude) run_claude 超时: task_id=21647dee, timeout=1800s
+2026-07-08 12:01:20,726 [INFO] Thread-17 (run_claude) _update_log_end 入参: log_id=056486c5643543d3b53a8649d2502b08
+2026-07-08 12:01:20,770 [INFO] Thread-17 (run_claude) _update_log_end 成功: log_id=056486c5643543d3b53a8649d2502b08, end_time=2026-07-08 12:01:20, status=10
+2026-07-08 13:15:32,652 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-08 13:15:32,652 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-08 13:18:06,381 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A2320A-PC-V1.0_ATE_TestCases_v1_1f35f796bb614192a39bbbff142fc0f6.xlsx, seq_name=100-A2320A-PC-V1.0_ATE_TestCases_v1_1f35f796bb614192a39bbbff142fc0f6.seq, log_id=1f35f796bb614192a39bbbff142fc0f6
+2026-07-08 13:18:06,381 [INFO] Thread-2 (run_excel_to_seq) run_excel_to_seq 入参: task_id=ffd80779, excel_path=D:\agent\ate\100-A2320A-PC-V1.0_ATE_TestCases_v1_1f35f796bb614192a39bbbff142fc0f6.xlsx, seq_name=100-A2320A-PC-V1.0_ATE_TestCases_v1_1f35f796bb614192a39bbbff142fc0f6.seq, log_id=1f35f796bb614192a39bbbff142fc0f6
+2026-07-08 13:18:06,381 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 出参: task_id=ffd80779
+2026-07-08 13:18:06,391 [INFO] Thread-1 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 13:18:06] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 13:18:06,561 [INFO] Thread-2 (run_excel_to_seq) Excel 解析完成: task_id=ffd80779, test_cases=216, vi_params=150, variables=27
+2026-07-08 13:18:06,571 [ERROR] Thread-2 (run_excel_to_seq) run_excel_to_seq 异常: task_id=ffd80779, error=无法连接 TestStand Engine。
+请确认:
+  1. TestStand 2012 已安装
+  2. 许可证已激活
+原始错误: (-2147221008, '尚未调用 CoInitialize。', None, None)
+Traceback (most recent call last):
+  File "D:\Python\Python310-32\lib\site-packages\win32com\client\dynamic.py", line 81, in _GetGoodDispatch
+    IDispatch = pythoncom.connect(IDispatch)
+pywintypes.com_error: (-2147221008, '尚未调用 CoInitialize。', None, None)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\agent\ate\teststand-2012-mcp\ts_engine.py", line 29, in connect
+    self._engine = win32com.client.Dispatch("TestStand.Engine")
+  File "D:\Python\Python310-32\lib\site-packages\win32com\client\__init__.py", line 116, in Dispatch
+    dispatch, userName = dynamic._GetGoodDispatchAndUserName(dispatch, userName, clsctx)
+  File "D:\Python\Python310-32\lib\site-packages\win32com\client\dynamic.py", line 101, in _GetGoodDispatchAndUserName
+    return (_GetGoodDispatch(IDispatch, clsctx), userName)
+  File "D:\Python\Python310-32\lib\site-packages\win32com\client\dynamic.py", line 83, in _GetGoodDispatch
+    IDispatch = pythoncom.CoCreateInstance(
+pywintypes.com_error: (-2147221008, '尚未调用 CoInitialize。', None, None)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\agent\ate\api_server.py", line 135, in run_excel_to_seq
+    generator.generate(test_cases, vi_params, seq_path, variables=variables)
+  File "D:\agent\ate\teststand-2012-mcp\excel_to_seq\seq_generator.py", line 66, in generate
+    self._engine = TestStandEngine()
+  File "D:\agent\ate\teststand-2012-mcp\engine\teststand_engine.py", line 31, in __init__
+    self._com = _get_com()
+  File "D:\agent\ate\teststand-2012-mcp\engine\teststand_engine.py", line 23, in _get_com
+    _com_instance.connect()
+  File "D:\agent\ate\teststand-2012-mcp\ts_engine.py", line 32, in connect
+    raise RuntimeError(
+RuntimeError: 无法连接 TestStand Engine。
+请确认:
+  1. TestStand 2012 已安装
+  2. 许可证已激活
+原始错误: (-2147221008, '尚未调用 CoInitialize。', None, None)
+2026-07-08 13:18:06,611 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 入参: log_id=1f35f796bb614192a39bbbff142fc0f6
+2026-07-08 13:18:06,651 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 成功: log_id=1f35f796bb614192a39bbbff142fc0f6, end_time=2026-07-08 13:18:06, status=10
+2026-07-08 13:24:12,168 [INFO] Thread-3 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A2320A-PC-V1.0_ATE_TestCases_v1_15efbdafbd104f57b0468f9cd71e09bc.xlsx, seq_name=100-A2320A-PC-V1.0_ATE_TestCases_v1_15efbdafbd104f57b0468f9cd71e09bc.seq, log_id=15efbdafbd104f57b0468f9cd71e09bc
+2026-07-08 13:24:12,178 [INFO] Thread-4 (run_excel_to_seq) run_excel_to_seq 入参: task_id=0c33a7f8, excel_path=D:\agent\ate\100-A2320A-PC-V1.0_ATE_TestCases_v1_15efbdafbd104f57b0468f9cd71e09bc.xlsx, seq_name=100-A2320A-PC-V1.0_ATE_TestCases_v1_15efbdafbd104f57b0468f9cd71e09bc.seq, log_id=15efbdafbd104f57b0468f9cd71e09bc
+2026-07-08 13:24:12,178 [INFO] Thread-3 (process_request_thread) _start_excel_to_seq_task 出参: task_id=0c33a7f8
+2026-07-08 13:24:12,178 [INFO] Thread-3 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 13:24:12] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 13:24:12,382 [INFO] Thread-4 (run_excel_to_seq) Excel 解析完成: task_id=0c33a7f8, test_cases=216, vi_params=150, variables=27
+2026-07-08 13:24:12,384 [ERROR] Thread-4 (run_excel_to_seq) run_excel_to_seq 异常: task_id=0c33a7f8, error=无法连接 TestStand Engine。
+请确认:
+  1. TestStand 2012 已安装
+  2. 许可证已激活
+原始错误: (-2147221008, '尚未调用 CoInitialize。', None, None)
+Traceback (most recent call last):
+  File "D:\Python\Python310-32\lib\site-packages\win32com\client\dynamic.py", line 81, in _GetGoodDispatch
+    IDispatch = pythoncom.connect(IDispatch)
+pywintypes.com_error: (-2147221008, '尚未调用 CoInitialize。', None, None)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\agent\ate\teststand-2012-mcp\ts_engine.py", line 29, in connect
+    self._engine = win32com.client.Dispatch("TestStand.Engine")
+  File "D:\Python\Python310-32\lib\site-packages\win32com\client\__init__.py", line 116, in Dispatch
+    dispatch, userName = dynamic._GetGoodDispatchAndUserName(dispatch, userName, clsctx)
+  File "D:\Python\Python310-32\lib\site-packages\win32com\client\dynamic.py", line 101, in _GetGoodDispatchAndUserName
+    return (_GetGoodDispatch(IDispatch, clsctx), userName)
+  File "D:\Python\Python310-32\lib\site-packages\win32com\client\dynamic.py", line 83, in _GetGoodDispatch
+    IDispatch = pythoncom.CoCreateInstance(
+pywintypes.com_error: (-2147221008, '尚未调用 CoInitialize。', None, None)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\agent\ate\api_server.py", line 135, in run_excel_to_seq
+    generator.generate(test_cases, vi_params, seq_path, variables=variables)
+  File "D:\agent\ate\teststand-2012-mcp\excel_to_seq\seq_generator.py", line 69, in generate
+    self._engine.create_new_file(output_path)
+  File "D:\agent\ate\teststand-2012-mcp\engine\teststand_engine.py", line 44, in create_new_file
+    self._seq_file = self.engine.NewSequenceFile()
+  File "D:\agent\ate\teststand-2012-mcp\engine\teststand_engine.py", line 37, in engine
+    return self._com.engine
+  File "D:\agent\ate\teststand-2012-mcp\ts_engine.py", line 43, in engine
+    self.connect()
+  File "D:\agent\ate\teststand-2012-mcp\ts_engine.py", line 32, in connect
+    raise RuntimeError(
+RuntimeError: 无法连接 TestStand Engine。
+请确认:
+  1. TestStand 2012 已安装
+  2. 许可证已激活
+原始错误: (-2147221008, '尚未调用 CoInitialize。', None, None)
+2026-07-08 13:24:12,389 [INFO] Thread-4 (run_excel_to_seq) _update_log_end 入参: log_id=15efbdafbd104f57b0468f9cd71e09bc
+2026-07-08 13:24:12,428 [INFO] Thread-4 (run_excel_to_seq) _update_log_end 成功: log_id=15efbdafbd104f57b0468f9cd71e09bc, end_time=2026-07-08 13:24:12, status=10
+2026-07-08 13:29:11,171 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-08 13:29:11,181 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-08 13:29:41,129 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A2320A-PC-V1.0_ATE_TestCases_v1_300f846a8336401fbd8177eaa3b9e37d.xlsx, seq_name=100-A2320A-PC-V1.0_ATE_TestCases_v1_300f846a8336401fbd8177eaa3b9e37d.seq, log_id=300f846a8336401fbd8177eaa3b9e37d
+2026-07-08 13:29:41,135 [INFO] Thread-2 (run_excel_to_seq) run_excel_to_seq 入参: task_id=e06f1089, excel_path=D:\agent\ate\100-A2320A-PC-V1.0_ATE_TestCases_v1_300f846a8336401fbd8177eaa3b9e37d.xlsx, seq_name=100-A2320A-PC-V1.0_ATE_TestCases_v1_300f846a8336401fbd8177eaa3b9e37d.seq, log_id=300f846a8336401fbd8177eaa3b9e37d
+2026-07-08 13:29:41,136 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 出参: task_id=e06f1089
+2026-07-08 13:29:41,139 [INFO] Thread-1 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 13:29:41] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 13:29:41,303 [INFO] Thread-2 (run_excel_to_seq) Excel 解析完成: task_id=e06f1089, test_cases=216, vi_params=150, variables=27
+2026-07-08 13:29:42,860 [INFO] Thread-2 (run_excel_to_seq) seq 文件已生成: task_id=e06f1089, path=D:\agent\ate\100-A2320A-PC-V1.0_ATE_TestCases_v1_300f846a8336401fbd8177eaa3b9e37d.seq
+2026-07-08 13:29:42,860 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 入参: log_id=300f846a8336401fbd8177eaa3b9e37d
+2026-07-08 13:29:42,910 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 成功: log_id=300f846a8336401fbd8177eaa3b9e37d, end_time=2026-07-08 13:29:42, status=10
+2026-07-08 15:35:08,482 [INFO] Thread-3 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A2320A-PC-V1.0_ATE_TestCases_v1_542aa51c2b8e47f7a2461c8b48e17957.xlsx, seq_name=100-A2320A-PC-V1.0_ATE_TestCases_v1_542aa51c2b8e47f7a2461c8b48e17957.seq, log_id=542aa51c2b8e47f7a2461c8b48e17957
+2026-07-08 15:35:08,492 [INFO] Thread-4 (run_excel_to_seq) run_excel_to_seq 入参: task_id=28bebcf6, excel_path=D:\agent\ate\100-A2320A-PC-V1.0_ATE_TestCases_v1_542aa51c2b8e47f7a2461c8b48e17957.xlsx, seq_name=100-A2320A-PC-V1.0_ATE_TestCases_v1_542aa51c2b8e47f7a2461c8b48e17957.seq, log_id=542aa51c2b8e47f7a2461c8b48e17957
+2026-07-08 15:35:08,492 [INFO] Thread-3 (process_request_thread) _start_excel_to_seq_task 出参: task_id=28bebcf6
+2026-07-08 15:35:08,502 [INFO] Thread-3 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 15:35:08] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 15:35:08,702 [INFO] Thread-4 (run_excel_to_seq) Excel 解析完成: task_id=28bebcf6, test_cases=216, vi_params=150, variables=27
+2026-07-08 15:35:09,333 [INFO] Thread-4 (run_excel_to_seq) seq 文件已生成: task_id=28bebcf6, path=D:\agent\ate\100-A2320A-PC-V1.0_ATE_TestCases_v1_542aa51c2b8e47f7a2461c8b48e17957.seq
+2026-07-08 15:35:09,333 [INFO] Thread-4 (run_excel_to_seq) _update_log_end 入参: log_id=542aa51c2b8e47f7a2461c8b48e17957
+2026-07-08 15:35:09,383 [INFO] Thread-4 (run_excel_to_seq) _update_log_end 成功: log_id=542aa51c2b8e47f7a2461c8b48e17957, end_time=2026-07-08 15:35:09, status=10
+2026-07-08 15:49:57,045 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-08 15:49:57,047 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-08 15:50:51,224 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A18036D9-V1.0_report_v4_77bcd333911041e9b65311861e8e9c97.xlsx, seq_name=100-A18036D9-V1.0_report_v4_77bcd333911041e9b65311861e8e9c97.seq, log_id=77bcd333911041e9b65311861e8e9c97
+2026-07-08 15:50:51,229 [INFO] Thread-2 (run_excel_to_seq) run_excel_to_seq 入参: task_id=24a2c409, excel_path=D:\agent\ate\100-A18036D9-V1.0_report_v4_77bcd333911041e9b65311861e8e9c97.xlsx, seq_name=100-A18036D9-V1.0_report_v4_77bcd333911041e9b65311861e8e9c97.seq, log_id=77bcd333911041e9b65311861e8e9c97
+2026-07-08 15:50:51,230 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 出参: task_id=24a2c409
+2026-07-08 15:50:51,233 [INFO] Thread-1 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 15:50:51] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 15:50:51,423 [INFO] Thread-2 (run_excel_to_seq) Excel 解析完成: task_id=24a2c409, test_cases=226, vi_params=156, variables=64
+2026-07-08 15:50:53,480 [INFO] Thread-2 (run_excel_to_seq) seq 文件已生成: task_id=24a2c409, path=D:\agent\ate\100-A18036D9-V1.0_report_v4_77bcd333911041e9b65311861e8e9c97.seq
+2026-07-08 15:50:53,482 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 入参: log_id=77bcd333911041e9b65311861e8e9c97
+2026-07-08 15:50:53,529 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 成功: log_id=77bcd333911041e9b65311861e8e9c97, end_time=2026-07-08 15:50:53, status=10
+2026-07-08 15:58:05,628 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-08 15:58:05,630 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-08 15:58:21,737 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A18036D9-V1.0_report_v4_945ee0d0e66b497fa38bd6e3a6d7d390.xlsx, seq_name=100-A18036D9-V1.0_report_v4_945ee0d0e66b497fa38bd6e3a6d7d390.seq, log_id=945ee0d0e66b497fa38bd6e3a6d7d390
+2026-07-08 15:58:21,742 [INFO] Thread-2 (run_excel_to_seq) run_excel_to_seq 入参: task_id=dc9893ca, excel_path=D:\agent\ate\100-A18036D9-V1.0_report_v4_945ee0d0e66b497fa38bd6e3a6d7d390.xlsx, seq_name=100-A18036D9-V1.0_report_v4_945ee0d0e66b497fa38bd6e3a6d7d390.seq, log_id=945ee0d0e66b497fa38bd6e3a6d7d390
+2026-07-08 15:58:21,742 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 出参: task_id=dc9893ca
+2026-07-08 15:58:21,745 [INFO] Thread-1 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 15:58:21] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 15:58:21,932 [INFO] Thread-2 (run_excel_to_seq) Excel 解析完成: task_id=dc9893ca, test_cases=226, vi_params=156, variables=64
+2026-07-08 15:58:23,916 [INFO] Thread-2 (run_excel_to_seq) seq 文件已生成: task_id=dc9893ca, path=D:\agent\ate\100-A18036D9-V1.0_report_v4_945ee0d0e66b497fa38bd6e3a6d7d390.seq
+2026-07-08 15:58:23,917 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 入参: log_id=945ee0d0e66b497fa38bd6e3a6d7d390
+2026-07-08 15:58:23,960 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 成功: log_id=945ee0d0e66b497fa38bd6e3a6d7d390, end_time=2026-07-08 15:58:23, status=10
+2026-07-08 16:09:48,340 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-08 16:09:48,340 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-08 16:10:17,312 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A18036D9-V1.0_report_v5_06c291cbd50e4ea085a58b94a03ecd32.xlsx, seq_name=100-A18036D9-V1.0_report_v5_06c291cbd50e4ea085a58b94a03ecd32.seq, log_id=06c291cbd50e4ea085a58b94a03ecd32
+2026-07-08 16:10:17,322 [INFO] Thread-2 (run_excel_to_seq) run_excel_to_seq 入参: task_id=1f6a904c, excel_path=D:\agent\ate\100-A18036D9-V1.0_report_v5_06c291cbd50e4ea085a58b94a03ecd32.xlsx, seq_name=100-A18036D9-V1.0_report_v5_06c291cbd50e4ea085a58b94a03ecd32.seq, log_id=06c291cbd50e4ea085a58b94a03ecd32
+2026-07-08 16:10:17,322 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 出参: task_id=1f6a904c
+2026-07-08 16:10:17,322 [INFO] Thread-1 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 16:10:17] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 16:10:17,453 [INFO] Thread-2 (run_excel_to_seq) Excel 解析完成: task_id=1f6a904c, test_cases=56, vi_params=156, variables=64
+2026-07-08 16:10:18,544 [INFO] Thread-2 (run_excel_to_seq) seq 文件已生成: task_id=1f6a904c, path=D:\agent\ate\100-A18036D9-V1.0_report_v5_06c291cbd50e4ea085a58b94a03ecd32.seq
+2026-07-08 16:10:18,544 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 入参: log_id=06c291cbd50e4ea085a58b94a03ecd32
+2026-07-08 16:10:18,604 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 成功: log_id=06c291cbd50e4ea085a58b94a03ecd32, end_time=2026-07-08 16:10:18, status=10
+2026-07-08 16:30:40,357 [INFO] Thread-3 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A18036D9-V1.0_report_v4_77432369c2ed4820b22a6cb0884869d4.xlsx, seq_name=100-A18036D9-V1.0_report_v4_77432369c2ed4820b22a6cb0884869d4.seq, log_id=77432369c2ed4820b22a6cb0884869d4
+2026-07-08 16:30:40,377 [INFO] Thread-4 (run_excel_to_seq) run_excel_to_seq 入参: task_id=088724eb, excel_path=D:\agent\ate\100-A18036D9-V1.0_report_v4_77432369c2ed4820b22a6cb0884869d4.xlsx, seq_name=100-A18036D9-V1.0_report_v4_77432369c2ed4820b22a6cb0884869d4.seq, log_id=77432369c2ed4820b22a6cb0884869d4
+2026-07-08 16:30:40,377 [INFO] Thread-3 (process_request_thread) _start_excel_to_seq_task 出参: task_id=088724eb
+2026-07-08 16:30:40,377 [INFO] Thread-3 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 16:30:40] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 16:30:40,602 [INFO] Thread-4 (run_excel_to_seq) Excel 解析完成: task_id=088724eb, test_cases=226, vi_params=156, variables=64
+2026-07-08 16:30:40,933 [INFO] Thread-4 (run_excel_to_seq) seq 文件已生成: task_id=088724eb, path=D:\agent\ate\100-A18036D9-V1.0_report_v4_77432369c2ed4820b22a6cb0884869d4.seq
+2026-07-08 16:30:40,933 [INFO] Thread-4 (run_excel_to_seq) _update_log_end 入参: log_id=77432369c2ed4820b22a6cb0884869d4
+2026-07-08 16:30:40,983 [INFO] Thread-4 (run_excel_to_seq) _update_log_end 成功: log_id=77432369c2ed4820b22a6cb0884869d4, end_time=2026-07-08 16:30:40, status=10
+2026-07-08 16:34:45,277 [INFO] Thread-5 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A18036D9-V1.0_report_v4_1b33366144e7428c831b87c2d9acd19c.xlsx, seq_name=100-A18036D9-V1.0_report_v4_1b33366144e7428c831b87c2d9acd19c.seq, log_id=1b33366144e7428c831b87c2d9acd19c
+2026-07-08 16:34:45,300 [INFO] Thread-6 (run_excel_to_seq) run_excel_to_seq 入参: task_id=9a9c0994, excel_path=D:\agent\ate\100-A18036D9-V1.0_report_v4_1b33366144e7428c831b87c2d9acd19c.xlsx, seq_name=100-A18036D9-V1.0_report_v4_1b33366144e7428c831b87c2d9acd19c.seq, log_id=1b33366144e7428c831b87c2d9acd19c
+2026-07-08 16:34:45,300 [INFO] Thread-5 (process_request_thread) _start_excel_to_seq_task 出参: task_id=9a9c0994
+2026-07-08 16:34:45,304 [INFO] Thread-5 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 16:34:45] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 16:34:45,486 [INFO] Thread-6 (run_excel_to_seq) Excel 解析完成: task_id=9a9c0994, test_cases=226, vi_params=156, variables=64
+2026-07-08 16:34:45,820 [INFO] Thread-6 (run_excel_to_seq) seq 文件已生成: task_id=9a9c0994, path=D:\agent\ate\100-A18036D9-V1.0_report_v4_1b33366144e7428c831b87c2d9acd19c.seq
+2026-07-08 16:34:45,820 [INFO] Thread-6 (run_excel_to_seq) _update_log_end 入参: log_id=1b33366144e7428c831b87c2d9acd19c
+2026-07-08 16:34:45,850 [INFO] Thread-6 (run_excel_to_seq) _update_log_end 成功: log_id=1b33366144e7428c831b87c2d9acd19c, end_time=2026-07-08 16:34:45, status=10
+2026-07-08 16:44:50,292 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-08 16:44:50,302 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-08 16:45:06,678 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A18036D9-V1.0_report_v4_9ab2834943cb4207bb2a8f453a6e1c17.xlsx, seq_name=100-A18036D9-V1.0_report_v4_9ab2834943cb4207bb2a8f453a6e1c17.seq, log_id=9ab2834943cb4207bb2a8f453a6e1c17
+2026-07-08 16:45:06,678 [INFO] Thread-2 (run_excel_to_seq) run_excel_to_seq 入参: task_id=1a4767e1, excel_path=D:\agent\ate\100-A18036D9-V1.0_report_v4_9ab2834943cb4207bb2a8f453a6e1c17.xlsx, seq_name=100-A18036D9-V1.0_report_v4_9ab2834943cb4207bb2a8f453a6e1c17.seq, log_id=9ab2834943cb4207bb2a8f453a6e1c17
+2026-07-08 16:45:06,678 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 出参: task_id=1a4767e1
+2026-07-08 16:45:06,688 [INFO] Thread-1 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 16:45:06] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 16:45:06,888 [INFO] Thread-2 (run_excel_to_seq) Excel 解析完成: task_id=1a4767e1, test_cases=226, vi_params=156, variables=64
+2026-07-08 16:45:08,237 [INFO] Thread-2 (run_excel_to_seq) seq 文件已生成: task_id=1a4767e1, path=D:\agent\ate\100-A18036D9-V1.0_report_v4_9ab2834943cb4207bb2a8f453a6e1c17.seq
+2026-07-08 16:45:08,237 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 入参: log_id=9ab2834943cb4207bb2a8f453a6e1c17
+2026-07-08 16:45:08,277 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 成功: log_id=9ab2834943cb4207bb2a8f453a6e1c17, end_time=2026-07-08 16:45:08, status=10
+2026-07-08 16:48:53,766 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-08 16:48:53,766 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-08 16:49:03,039 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A18036D9-V1.0_report_v4_0adbf5ccbe8a4394a7ca8c4977c40fda.xlsx, seq_name=100-A18036D9-V1.0_report_v4_0adbf5ccbe8a4394a7ca8c4977c40fda.seq, log_id=0adbf5ccbe8a4394a7ca8c4977c40fda
+2026-07-08 16:49:03,049 [INFO] Thread-1 (process_request_thread) _start_excel_to_seq_task 出参: task_id=d16403a3
+2026-07-08 16:49:03,039 [INFO] Thread-2 (run_excel_to_seq) run_excel_to_seq 入参: task_id=d16403a3, excel_path=D:\agent\ate\100-A18036D9-V1.0_report_v4_0adbf5ccbe8a4394a7ca8c4977c40fda.xlsx, seq_name=100-A18036D9-V1.0_report_v4_0adbf5ccbe8a4394a7ca8c4977c40fda.seq, log_id=0adbf5ccbe8a4394a7ca8c4977c40fda
+2026-07-08 16:49:03,051 [INFO] Thread-1 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 16:49:03] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 16:49:03,269 [INFO] Thread-2 (run_excel_to_seq) Excel 解析完成: task_id=d16403a3, test_cases=226, vi_params=156, variables=64
+2026-07-08 16:49:04,612 [INFO] Thread-2 (run_excel_to_seq) seq 文件已生成: task_id=d16403a3, path=D:\agent\ate\100-A18036D9-V1.0_report_v4_0adbf5ccbe8a4394a7ca8c4977c40fda.seq
+2026-07-08 16:49:04,612 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 入参: log_id=0adbf5ccbe8a4394a7ca8c4977c40fda
+2026-07-08 16:49:04,672 [INFO] Thread-2 (run_excel_to_seq) _update_log_end 成功: log_id=0adbf5ccbe8a4394a7ca8c4977c40fda, end_time=2026-07-08 16:49:04, status=10
+2026-07-08 17:26:00,890 [INFO] Thread-3 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A18036D9-V1.0_report_v4_03fea17f7375449c9aa1cf264d7fb7a0.xlsx, seq_name=100-A18036D9-V1.0_report_v4_03fea17f7375449c9aa1cf264d7fb7a0.seq, log_id=03fea17f7375449c9aa1cf264d7fb7a0
+2026-07-08 17:26:00,910 [INFO] Thread-4 (run_excel_to_seq) run_excel_to_seq 入参: task_id=5ddaeb54, excel_path=D:\agent\ate\100-A18036D9-V1.0_report_v4_03fea17f7375449c9aa1cf264d7fb7a0.xlsx, seq_name=100-A18036D9-V1.0_report_v4_03fea17f7375449c9aa1cf264d7fb7a0.seq, log_id=03fea17f7375449c9aa1cf264d7fb7a0
+2026-07-08 17:26:00,910 [INFO] Thread-3 (process_request_thread) _start_excel_to_seq_task 出参: task_id=5ddaeb54
+2026-07-08 17:26:00,910 [INFO] Thread-3 (process_request_thread) 10.12.93.201 - - [08/Jul/2026 17:26:00] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-08 17:26:01,140 [INFO] Thread-4 (run_excel_to_seq) Excel 解析完成: task_id=5ddaeb54, test_cases=226, vi_params=156, variables=64
+2026-07-08 17:26:01,462 [INFO] Thread-4 (run_excel_to_seq) seq 文件已生成: task_id=5ddaeb54, path=D:\agent\ate\100-A18036D9-V1.0_report_v4_03fea17f7375449c9aa1cf264d7fb7a0.seq
+2026-07-08 17:26:01,472 [INFO] Thread-4 (run_excel_to_seq) _update_log_end 入参: log_id=03fea17f7375449c9aa1cf264d7fb7a0
+2026-07-08 17:26:01,512 [INFO] Thread-4 (run_excel_to_seq) _update_log_end 成功: log_id=03fea17f7375449c9aa1cf264d7fb7a0, end_time=2026-07-08 17:26:01, status=10
+2026-07-09 09:11:13,655 [INFO] Thread-5 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A18036D9-V1.0_report_v4_190b9dd9bbd44fa3991337db8a4d71eb.xlsx, seq_name=100-A18036D9-V1.0_report_v4_190b9dd9bbd44fa3991337db8a4d71eb.seq, log_id=190b9dd9bbd44fa3991337db8a4d71eb
+2026-07-09 09:11:13,667 [INFO] Thread-6 (run_excel_to_seq) run_excel_to_seq 入参: task_id=07dbde5e, excel_path=D:\agent\ate\100-A18036D9-V1.0_report_v4_190b9dd9bbd44fa3991337db8a4d71eb.xlsx, seq_name=100-A18036D9-V1.0_report_v4_190b9dd9bbd44fa3991337db8a4d71eb.seq, log_id=190b9dd9bbd44fa3991337db8a4d71eb
+2026-07-09 09:11:13,667 [INFO] Thread-5 (process_request_thread) _start_excel_to_seq_task 出参: task_id=07dbde5e
+2026-07-09 09:11:13,667 [INFO] Thread-5 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 09:11:13] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-09 09:11:13,949 [INFO] Thread-6 (run_excel_to_seq) Excel 解析完成: task_id=07dbde5e, test_cases=226, vi_params=156, variables=64
+2026-07-09 09:11:14,406 [INFO] Thread-6 (run_excel_to_seq) seq 文件已生成: task_id=07dbde5e, path=D:\agent\ate\100-A18036D9-V1.0_report_v4_190b9dd9bbd44fa3991337db8a4d71eb.seq
+2026-07-09 09:11:14,406 [INFO] Thread-6 (run_excel_to_seq) _update_log_end 入参: log_id=190b9dd9bbd44fa3991337db8a4d71eb
+2026-07-09 09:11:14,456 [INFO] Thread-6 (run_excel_to_seq) _update_log_end 成功: log_id=190b9dd9bbd44fa3991337db8a4d71eb, end_time=2026-07-09 09:11:14, status=10
+2026-07-09 10:40:56,909 [INFO] Thread-7 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 10:40:56] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 10:41:34,137 [INFO] Thread-8 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 10:41:34] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 10:53:09,055 [INFO] Thread-9 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 10:53:09] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 10:54:46,468 [INFO] Thread-10 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A18036D9-V1.0_report_v4.xlsx, seq_name=bbb.seq, log_id=
+2026-07-09 10:54:46,478 [INFO] Thread-11 (run_excel_to_seq) run_excel_to_seq 入参: task_id=8a13a0f6, excel_path=D:\agent\ate\100-A18036D9-V1.0_report_v4.xlsx, seq_name=bbb.seq, log_id=
+2026-07-09 10:54:46,478 [INFO] Thread-10 (process_request_thread) _start_excel_to_seq_task 出参: task_id=8a13a0f6
+2026-07-09 10:54:46,478 [INFO] Thread-10 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 10:54:46] "[35m[1mPOST /api/run HTTP/1.1[0m" 202 -
+2026-07-09 10:54:46,639 [INFO] Thread-11 (run_excel_to_seq) Excel 解析完成: task_id=8a13a0f6, test_cases=226, vi_params=156, variables=64
+2026-07-09 10:54:46,959 [INFO] Thread-11 (run_excel_to_seq) seq 文件已生成: task_id=8a13a0f6, path=D:\agent\ate\bbb.seq
+2026-07-09 10:55:00,850 [INFO] Thread-12 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 10:55:00] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 11:31:38,346 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-09 11:31:38,346 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-09 13:10:26,653 [INFO] Thread-1 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 13:10:26] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 13:10:41,887 [INFO] Thread-2 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 13:10:41] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 13:11:37,899 [INFO] Thread-3 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 13:11:37] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 13:51:50,178 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-09 13:51:50,178 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-09 13:54:16,126 [INFO] Thread-1 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 13:54:16] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-09 14:48:30,864 [INFO] Thread-2 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 14:48:30] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 14:48:48,747 [INFO] Thread-3 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A18036D9-V1.0_report_v4_2abec364b7314932a2d91580df50e159.xlsx, seq_name=100-A18036D9-V1.0_report_v4_2abec364b7314932a2d91580df50e159.seq, log_id=2abec364b7314932a2d91580df50e159
+2026-07-09 14:48:48,757 [INFO] Thread-4 (run_excel_to_seq) run_excel_to_seq 入参: task_id=b87e3b7c, excel_path=D:\agent\ate\100-A18036D9-V1.0_report_v4_2abec364b7314932a2d91580df50e159.xlsx, seq_name=100-A18036D9-V1.0_report_v4_2abec364b7314932a2d91580df50e159.seq, log_id=2abec364b7314932a2d91580df50e159
+2026-07-09 14:48:48,757 [INFO] Thread-3 (process_request_thread) _start_excel_to_seq_task 出参: task_id=b87e3b7c
+2026-07-09 14:48:48,767 [INFO] Thread-3 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 14:48:48] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-09 14:48:49,037 [INFO] Thread-4 (run_excel_to_seq) Excel 解析完成: task_id=b87e3b7c, test_cases=226, vi_params=156, variables=64
+2026-07-09 14:48:51,148 [INFO] Thread-4 (run_excel_to_seq) seq 文件已生成: task_id=b87e3b7c, path=D:\agent\ate\100-A18036D9-V1.0_report_v4_2abec364b7314932a2d91580df50e159.seq
+2026-07-09 14:48:51,158 [INFO] Thread-4 (run_excel_to_seq) _update_log_end 入参: log_id=2abec364b7314932a2d91580df50e159
+2026-07-09 14:48:51,208 [INFO] Thread-4 (run_excel_to_seq) _update_log_end 成功: log_id=2abec364b7314932a2d91580df50e159, end_time=2026-07-09 14:48:51, status=10
+2026-07-09 14:54:16,387 [INFO] Thread-5 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 14:54:16] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 15:00:22,176 [INFO] MainThread [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://10.16.9.33:5050
+2026-07-09 15:00:22,176 [INFO] MainThread [33mPress CTRL+C to quit[0m
+2026-07-09 15:00:50,397 [INFO] Thread-1 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 15:00:50] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 15:01:14,609 [INFO] Thread-2 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 15:01:14] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 15:02:55,105 [INFO] Thread-3 (process_request_thread) 127.0.0.1 - - [09/Jul/2026 15:02:55] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 15:10:17,830 [INFO] Thread-4 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 15:10:17] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 15:58:24,278 [INFO] Thread-5 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 15:58:24] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 15:59:59,167 [INFO] Thread-6 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 15:59:59] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 16:00:49,198 [INFO] Thread-7 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 16:00:49] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 16:01:23,832 [INFO] Thread-8 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 16:01:23] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 16:17:00,688 [INFO] Thread-9 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 16:17:00] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 17:26:28,065 [INFO] Thread-10 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 17:26:28] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 17:28:48,686 [INFO] Thread-11 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 17:28:48] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 17:31:17,815 [INFO] Thread-12 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 17:31:17] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 17:31:53,219 [INFO] Thread-13 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 17:31:53] "GET /api/files HTTP/1.1" 200 -
+2026-07-09 17:32:05,755 [INFO] Thread-14 (process_request_thread) _start_excel_to_seq_task 入参: excel_path=100-A18036D9-V1.0_report_v4_4e697fd077a04158a1db70dda5e6669a.xlsx, seq_name=100-A18036D9-V1.0_report_v4_4e697fd077a04158a1db70dda5e6669a.seq, log_id=4e697fd077a04158a1db70dda5e6669a
+2026-07-09 17:32:05,779 [INFO] Thread-15 (run_excel_to_seq) run_excel_to_seq 入参: task_id=84ba0303, excel_path=D:\agent\ate\100-A18036D9-V1.0_report_v4_4e697fd077a04158a1db70dda5e6669a.xlsx, seq_name=100-A18036D9-V1.0_report_v4_4e697fd077a04158a1db70dda5e6669a.seq, log_id=4e697fd077a04158a1db70dda5e6669a
+2026-07-09 17:32:05,779 [INFO] Thread-14 (process_request_thread) _start_excel_to_seq_task 出参: task_id=84ba0303
+2026-07-09 17:32:05,785 [INFO] Thread-14 (process_request_thread) 10.12.93.201 - - [09/Jul/2026 17:32:05] "[35m[1mPOST /api/addLog HTTP/1.1[0m" 201 -
+2026-07-09 17:32:06,063 [INFO] Thread-15 (run_excel_to_seq) Excel 解析完成: task_id=84ba0303, test_cases=226, vi_params=156, variables=64
+2026-07-09 17:32:08,606 [INFO] Thread-15 (run_excel_to_seq) seq 文件已生成: task_id=84ba0303, path=D:\agent\ate\100-A18036D9-V1.0_report_v4_4e697fd077a04158a1db70dda5e6669a.seq
+2026-07-09 17:32:08,606 [INFO] Thread-15 (run_excel_to_seq) _update_log_end 入参: log_id=4e697fd077a04158a1db70dda5e6669a
+2026-07-09 17:32:08,686 [INFO] Thread-15 (run_excel_to_seq) _update_log_end 成功: log_id=4e697fd077a04158a1db70dda5e6669a, end_time=2026-07-09 17:32:08, status=10
