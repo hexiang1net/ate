@@ -9,6 +9,7 @@
 import logging
 import os
 import re
+import sqlite3
 import subprocess
 import sys
 import threading
@@ -30,6 +31,7 @@ from excel_to_seq import ExcelParser, SeqGenerator
 app = Flask(__name__)
 
 BASE_DIR = r"D:\agent\ate"
+OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 LOG_FILE = os.path.join(BASE_DIR, "api_server.log")
 
 # ---- 日志配置 ----
@@ -83,26 +85,51 @@ def _update_log_end(log_id: str) -> None:
         conn.close()
 
 
-def _git_commit_files(seq_name: str, log_id: str) -> None:
-    """提交 seq 文件到 GitHub (直接使用 git 命令)."""
+def _git_commit_files(seq_name: str, log_id: str) -> bool:
+    """提交 seq 文件到 GitHub (直接使用 git 命令). 返回 True 表示成功。"""
     logger.info("_git_commit_files 开始: seq_name=%s, log_id=%s", seq_name, log_id)
     try:
-        subprocess.run(["git", "add", seq_name], cwd=BASE_DIR, capture_output=True, timeout=30)
-        result = subprocess.run(
+        seq_path = os.path.join(OUTPUT_DIR, seq_name)
+        add_result = subprocess.run(
+            ["git", "add", seq_path], cwd=BASE_DIR,
+            capture_output=True, timeout=30,
+        )
+        if add_result.returncode != 0:
+            add_err = add_result.stderr.decode("utf-8", errors="replace").strip()
+            logger.error("_git_commit_files git add 失败: seq_path=%s, stderr=%s", seq_path, add_err)
+            return False
+
+        commit_result = subprocess.run(
             ["git", "commit", "-m", f"feat: 生成测试序列 {seq_name}"],
             cwd=BASE_DIR, capture_output=True, timeout=30,
         )
-        if result.returncode != 0:
-            stderr_msg = result.stderr.decode("utf-8", errors="replace")
-            if "nothing to commit" in stderr_msg:
+        if commit_result.returncode != 0:
+            combined = (
+                commit_result.stdout.decode("utf-8", errors="replace") + "\n"
+                + commit_result.stderr.decode("utf-8", errors="replace")
+            )
+            if "nothing to commit" in combined or "nothing added to commit" in combined:
                 logger.info("_git_commit_files: 无变更需要提交")
-                return
-            logger.error("_git_commit_files 提交失败: %s", stderr_msg[-500:])
-            return
-        subprocess.run(["git", "push"], cwd=BASE_DIR, capture_output=True, timeout=60)
+                return True
+            logger.error("_git_commit_files 提交失败: stdout=%s stderr=%s",
+                         commit_result.stdout.decode("utf-8", errors="replace")[-500:],
+                         commit_result.stderr.decode("utf-8", errors="replace")[-500:])
+            return False
+
+        push_result = subprocess.run(
+            ["git", "push"], cwd=BASE_DIR,
+            capture_output=True, timeout=60,
+        )
+        if push_result.returncode != 0:
+            push_err = push_result.stderr.decode("utf-8", errors="replace").strip()
+            logger.error("_git_commit_files git push 失败: %s", push_err[-500:])
+            return False
+
         logger.info("_git_commit_files 成功: log_id=%s", log_id)
+        return True
     except Exception:
         logger.exception("_git_commit_files 异常: log_id=%s", log_id)
+        return False
 
 
 def run_excel_to_seq(
@@ -121,9 +148,7 @@ def run_excel_to_seq(
         tasks[task_id]["started_at"] = datetime.now().isoformat()
 
     try:
-        seq_path = os.path.join(BASE_DIR, seq_name)
-
-        # 解析 Excel
+        seq_path = os.path.join(OUTPUT_DIR, seq_name)
         parser = ExcelParser()
         test_cases, vi_params, variables = parser.parse(excel_path)
         tasks[task_id]["test_case_count"] = len(test_cases)
@@ -162,7 +187,7 @@ def _start_excel_to_seq_task(excel_path: str, seq_name: str, log_id: str = "") -
         excel_path, seq_name, log_id,
     )
     if not os.path.isabs(excel_path):
-        excel_path = os.path.join(BASE_DIR, excel_path)
+        excel_path = os.path.join(OUTPUT_DIR, excel_path)
 
     task_id = str(uuid.uuid4())[:8]
 
@@ -209,7 +234,7 @@ def run() -> tuple[Any, int]:
         original_name = match.group(1).strip(" \"'") if match else "export.xlsx"
         base, ext = os.path.splitext(original_name)
         file_name = f"{base}_{plan_id}{ext}"
-        file_path = os.path.join(BASE_DIR, file_name)
+        file_path = os.path.join(OUTPUT_DIR, file_name)
         with open(file_path, "wb") as f:
             f.write(resp.content)
     except Exception as exc:
@@ -273,7 +298,7 @@ def add_log() -> tuple[Any, int]:
         # 拆分为 基础名 + 扩展名
         base, ext = os.path.splitext(original_name)
         file_name = f"{base}_{log_id}{ext}"
-        file_path = os.path.join(BASE_DIR, file_name)
+        file_path = os.path.join(OUTPUT_DIR, file_name)
 
         with open(file_path, "wb") as f:
             f.write(resp.content)
@@ -352,10 +377,10 @@ def list_files():
                 rec["fileSize"] = 0
             records.append(rec)
 
-        # 兜底：扫描磁盘上未被任务记录覆盖的 .seq 文件
-        for f in sorted(os.listdir(BASE_DIR), reverse=True):
+        # 兜底：扫描 OUTPUT_DIR 中未被任务记录覆盖的 .seq 文件
+        for f in sorted(os.listdir(OUTPUT_DIR), reverse=True):
             if f.endswith(".seq") and f not in seen:
-                fp = os.path.join(BASE_DIR, f)
+                fp = os.path.join(OUTPUT_DIR, f)
                 records.append({
                     "taskId": "",
                     "status": "unknown",
@@ -402,16 +427,21 @@ def push_to_git(task_id: str) -> tuple[Any, int]:
     if not seq_name or not seq_path or not os.path.isfile(seq_path):
         return jsonify({"error": "seq 文件不存在, 无法推送"}), 404
 
-    _git_commit_files(seq_name, log_id)
+    ok = _git_commit_files(seq_name, log_id)
 
-    with lock:
-        tasks[task_id]["pushed"] = True
-        tasks[task_id]["pushed_at"] = datetime.now().isoformat()
-
-    return jsonify({
-        "success": True,
-        "message": f"已推送 {seq_name} 到 GitHub",
-    }), 200
+    if ok:
+        with lock:
+            tasks[task_id]["pushed"] = True
+            tasks[task_id]["pushed_at"] = datetime.now().isoformat()
+        return jsonify({
+            "success": True,
+            "message": f"已推送 {seq_name} 到 GitHub",
+        }), 200
+    else:
+        return jsonify({
+            "success": False,
+            "error": f"推送 {seq_name} 失败，详见 api_server.log",
+        }), 500
 
 
 if __name__ == "__main__":

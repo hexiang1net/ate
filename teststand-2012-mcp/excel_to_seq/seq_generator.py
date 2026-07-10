@@ -6,7 +6,7 @@ from typing import List, Dict, Optional
 
 import win32com.client
 
-from engine.teststand_engine import TestStandEngine
+from ts_engine import TestStandEngine
 from engine.constants import STEP_GROUP_API, STEP_TYPE_SEQUENCE_CALL
 from .excel_to_seq_model import ParsedTestCase, ParsedViParameter, ParsedVariable
 from .excel_parser import group_by_parent_step
