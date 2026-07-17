@@ -1111,8 +1111,8 @@ class SeqGenerator:
                 seconds = value if unit == "s" else value / 1000.0
                 time_expr = str(seconds)
 
-        if not time_expr and tc.wait_time:
-            time_expr = tc.wait_time
+        if not time_expr and tc.wait_seconds:
+            time_expr = tc.wait_seconds
 
         if time_expr:
             try:

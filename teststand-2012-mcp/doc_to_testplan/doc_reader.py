@@ -67,7 +67,18 @@ def _read_docx(path: str, extract_images: bool = True) -> DocumentContent:
     except ImportError:
         raise ImportError("读取 Word 文档需要安装 python-docx: pip install python-docx")
 
-    doc = Document(path)
+    try:
+        doc = Document(path)
+    except Exception as e:
+        err_msg = str(e)
+        if "OLE2" in err_msg or "OOXML" in err_msg:
+            raise ValueError(
+                f"文件不是有效的 .docx 格式: {path}\n"
+                "可能原因: 文件实际是 .doc 格式（旧版 Word），需要先另存为 .docx；"
+                "或文件已损坏。"
+            ) from e
+        raise ValueError(f"无法读取 Word 文档: {path} — {err_msg}") from e
+
     parts = []
     images = []
     position = 0
@@ -148,7 +159,17 @@ def _parse_docx_table(tbl_element, doc) -> str:
 def _read_xlsx(path: str, extract_images: bool = True) -> DocumentContent:
     """读取 Excel 文件。"""
     from openpyxl import load_workbook
-    wb = load_workbook(path, read_only=True, data_only=True)
+    try:
+        wb = load_workbook(path, read_only=True, data_only=True)
+    except Exception as e:
+        err_msg = str(e)
+        if "OLE2" in err_msg or "OOXML" in err_msg:
+            raise ValueError(
+                f"文件不是有效的 .xlsx 格式: {path}\n"
+                "可能原因: 文件实际是 .xls 格式（旧版 Excel），需要先另存为 .xlsx；"
+                "或文件已损坏。"
+            ) from e
+        raise ValueError(f"无法读取 Excel 文件: {path} — {err_msg}") from e
     parts = []
 
     for sheet_name in wb.sheetnames:

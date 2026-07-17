@@ -153,7 +153,7 @@ class ExcelGenerator:
                 tc.unit,              # unit
                 tc.format,            # format
                 tc.run_mode,          # run mode
-                tc.wait_time,         # wait(s)
+                tc.wait_seconds,         # wait(s)
                 tc.adapter,           # adapter
                 tc.additional_results, # additional results
                 tc.settings,          # settings

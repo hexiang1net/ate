@@ -49,7 +49,16 @@ class ExcelParser:
         Returns:
             Tuple of (test_cases, vi_parameters, variables)
         """
-        wb = load_workbook(excel_path, data_only=True)
+        try:
+            wb = load_workbook(excel_path, data_only=True)
+        except Exception as e:
+            err_msg = str(e)
+            if "OLE2" in err_msg or "OOXML" in err_msg:
+                raise ValueError(
+                    f"文件不是有效的 .xlsx 格式: {excel_path}\n"
+                    "请确认文件是真正的 .xlsx 格式（非 .xls 改名），或文件未损坏。"
+                ) from e
+            raise ValueError(f"无法读取 Excel 文件: {excel_path} — {err_msg}") from e
 
         # Parse Sheet 1: ATE test item check list
         ws1 = wb["ATE test item check list"]
@@ -95,7 +104,7 @@ class ExcelParser:
                 unit=str(row[self.COL_UNIT - 1] or "").strip(),
                 format=str(row[self.COL_FORMAT - 1] or "").strip(),
                 run_mode=str(row[self.COL_RUN_MODE - 1] or "").strip(),
-                wait_time=str(row[self.COL_WAIT_TIME - 1] or "").strip(),
+                wait_seconds=str(row[self.COL_WAIT_TIME - 1] or "").strip(),
                 adapter=str(row[self.COL_ADAPTER - 1] or "").strip(),
                 additional_results=str(row[self.COL_ADDITIONAL_RESULTS - 1] or "").strip(),
                 settings=str(row[self.COL_SETTINGS - 1] or "").strip(),

@@ -66,6 +66,7 @@ SYSTEM_PROMPT = """你是一个测试工程师助手。你的任务是从测试�
 | input_signals | 输入信号/激励 | "VIN=12V, IOUT=500mA" |
 | output_loads | 输出负载规格 | "R_LOAD=10Ω 5W", "IOUT=500mA", "LED负载 20mA" |
 | precondition | 前置条件 | "环境温度 25±3℃" |
+| adapter | TestStand 适配器类型（见下方适配器说明） | "G Flexible VI Adapter" |
 | comments | 备注/注意事项 | "超时 5s 重试" |
 
 ### output_loads 字段说明
@@ -107,6 +108,24 @@ SYSTEM_PROMPT = """你是一个测试工程师助手。你的任务是从测试�
 | 测试段之间的标题/分隔 | Label |
 | 需要互斥锁保护的步骤 | NI_Lock |
 | 纯文字说明，不参与执行 | Statement |
+
+### 适配器（adapter）选择规则
+
+adapter 字段填写 TestStand 适配器类型，根据步骤类型和调用方式选择：
+
+| 适配器类型 | 适用场景 | 对应步骤类型 |
+|-----------|---------|------------|
+| **G Flexible VI Adapter** | 调用 LabVIEW VI（.vi）的步骤 | Action, NumericLimitTest, PassFailTest, StringValueTest |
+| **None Adapter** | 不需要调用 VI 的步骤（等待、流程控制、标签、变量操作） | NI_Wait, NI_Flow_If/Else/End, Label, MessagePopup |
+| **Sequence Adapter** | 调用子序列（SequenceCall）的步骤 | SequenceCall |
+| **Automation Adapter** | 调用 ActiveX/COM 自动化接口（如 NI TestStand API）的步骤 | Action |
+
+选择规则：
+- 如果 step_type 是 `NI_Wait`、`NI_Flow_If`、`NI_Flow_Else`、`NI_Flow_End`、`Label`、`MessagePopup` → adapter = `"None Adapter"`
+- 如果 step_type 是 `SequenceCall` → adapter = `"Sequence Adapter"`
+- 如果步骤调用 VI 或 instrument_vi 字段有值 → adapter = `"G Flexible VI Adapter"`
+- 如果步骤调用 COM/ActiveX API（如 PostUIMessage）→ adapter = `"Automation Adapter"`
+- 否则默认用 `"None Adapter"`
 
 ## 步骤编号规则
 
@@ -267,35 +286,35 @@ test_project 字段的命名必须遵循以下规范，不能全部用中文：
 ```json
 {
   "test_cases": [
-    {"step_no": "1_1", "step": "startup", "test_project": "开机时自动序列", "step_type": "Statement"},
-    {"step_no": "1_2", "step": "startup", "test_project": "初始化端口", "step_type": "PassFailTest", "equipment": "IOControl"},
-    {"step_no": "1_3", "step": "startup", "test_project": "Wait", "step_type": "NI_Wait"},
-    {"step_no": "1_4", "step": "startup", "test_project": "断开所有继电器", "step_type": "PassFailTest", "equipment": "IOControl"},
+    {"step_no": "1_1", "step": "startup", "test_project": "开机时自动序列", "step_type": "Statement", "adapter": "None Adapter"},
+    {"step_no": "1_2", "step": "startup", "test_project": "初始化端口", "step_type": "PassFailTest", "adapter": "G Flexible VI Adapter", "equipment": "IOControl"},
+    {"step_no": "1_3", "step": "startup", "test_project": "Wait", "step_type": "NI_Wait", "adapter": "None Adapter"},
+    {"step_no": "1_4", "step": "startup", "test_project": "断开所有继电器", "step_type": "PassFailTest", "adapter": "G Flexible VI Adapter", "equipment": "IOControl"},
 
-    {"step_no": "2_1", "step": "main", "test_project": "条码检查_MES", "step_type": "StringValueTest", "equipment": "Protocal"},
-    {"step_no": "2_2", "step": "main", "test_project": "2. 电压测试", "step_type": "Label"},
-    {"step_no": "2_3", "step": "main", "test_project": "NoSave_#1 CH1603 Y16 ON_供电", "step_type": "Action", "equipment": "IOControl"},
-    {"step_no": "2_4", "step": "main", "test_project": "Wait", "step_type": "NI_Wait"},
-    {"step_no": "2_5", "step": "main", "test_project": "2.0 5VDC Voltage Test@ KN1_1 and KN1_2", "step_type": "NumericLimitTest", "limits": "4.5<=x<=5.5", "unit": "V", "usl": "5.5", "lsl": "4.5", "equipment": "DMM"},
-    {"step_no": "2_6", "step": "main", "test_project": "NoSave_#1 CH1603 Y16 OFF", "step_type": "PassFailTest", "equipment": "IOControl"},
-    {"step_no": "2_7", "step": "main", "test_project": "0V check", "step_type": "NumericLimitTest", "limits": "-1.0<=x<=1.0", "unit": "V", "equipment": "DMM"},
+    {"step_no": "2_1", "step": "main", "test_project": "条码检查_MES", "step_type": "StringValueTest", "adapter": "G Flexible VI Adapter", "equipment": "Protocal"},
+    {"step_no": "2_2", "step": "main", "test_project": "2. 电压测试", "step_type": "Label", "adapter": "None Adapter"},
+    {"step_no": "2_3", "step": "main", "test_project": "NoSave_#1 CH1603 Y16 ON_供电", "step_type": "Action", "adapter": "G Flexible VI Adapter", "equipment": "IOControl"},
+    {"step_no": "2_4", "step": "main", "test_project": "Wait", "step_type": "NI_Wait", "adapter": "None Adapter"},
+    {"step_no": "2_5", "step": "main", "test_project": "2.0 5VDC Voltage Test@ KN1_1 and KN1_2", "step_type": "NumericLimitTest", "adapter": "G Flexible VI Adapter", "limits": "4.5<=x<=5.5", "unit": "V", "usl": "5.5", "lsl": "4.5", "equipment": "DMM"},
+    {"step_no": "2_6", "step": "main", "test_project": "NoSave_#1 CH1603 Y16 OFF", "step_type": "PassFailTest", "adapter": "G Flexible VI Adapter", "equipment": "IOControl"},
+    {"step_no": "2_7", "step": "main", "test_project": "0V check", "step_type": "NumericLimitTest", "adapter": "G Flexible VI Adapter", "limits": "-1.0<=x<=1.0", "unit": "V", "equipment": "DMM"},
 
-    {"step_no": "2_8", "step": "main", "test_project": "3. 继电器测试模式", "step_type": "Label"},
-    {"step_no": "2_9", "step": "main", "test_project": "5.1 To activate the AC outputs", "step_type": "StringValueTest", "equipment": "Protocal"},
-    {"step_no": "2_10", "step": "main", "test_project": "NoSave_#3 Relay8CH C ON", "step_type": "Action", "equipment": "IOControl"},
-    {"step_no": "2_11", "step": "main", "test_project": "Wait", "step_type": "NI_Wait"},
-    {"step_no": "2_12", "step": "main", "test_project": "5.2 KN5-1/5 220VAC Check", "step_type": "NumericLimitTest", "limits": "210.0<=x<=230.0", "unit": "VAC", "equipment": "DMM"},
-    {"step_no": "2_13", "step": "main", "test_project": "NoSave_#3 Relay8CH C OFF", "step_type": "PassFailTest", "equipment": "IOControl"},
-    {"step_no": "2_14", "step": "main", "test_project": "0V check", "step_type": "NumericLimitTest", "limits": "-1.0<=x<=1.0", "unit": "V", "equipment": "DMM"},
+    {"step_no": "2_8", "step": "main", "test_project": "3. 继电器测试模式", "step_type": "Label", "adapter": "None Adapter"},
+    {"step_no": "2_9", "step": "main", "test_project": "5.1 To activate the AC outputs", "step_type": "StringValueTest", "adapter": "G Flexible VI Adapter", "equipment": "Protocal"},
+    {"step_no": "2_10", "step": "main", "test_project": "NoSave_#3 Relay8CH C ON", "step_type": "Action", "adapter": "G Flexible VI Adapter", "equipment": "IOControl"},
+    {"step_no": "2_11", "step": "main", "test_project": "Wait", "step_type": "NI_Wait", "adapter": "None Adapter"},
+    {"step_no": "2_12", "step": "main", "test_project": "5.2 KN5-1/5 220VAC Check", "step_type": "NumericLimitTest", "adapter": "G Flexible VI Adapter", "limits": "210.0<=x<=230.0", "unit": "VAC", "equipment": "DMM"},
+    {"step_no": "2_13", "step": "main", "test_project": "NoSave_#3 Relay8CH C OFF", "step_type": "PassFailTest", "adapter": "G Flexible VI Adapter", "equipment": "IOControl"},
+    {"step_no": "2_14", "step": "main", "test_project": "0V check", "step_type": "NumericLimitTest", "adapter": "G Flexible VI Adapter", "limits": "-1.0<=x<=1.0", "unit": "V", "equipment": "DMM"},
 
-    {"step_no": "2_15", "step": "main", "test_project": "4.Sensor Value Check", "step_type": "Label"},
-    {"step_no": "2_16", "step": "main", "test_project": "4.0 Read FF Air Sensor Value", "step_type": "NumericLimitTest", "equipment": "SignalAcquisition"},
+    {"step_no": "2_15", "step": "main", "test_project": "4.Sensor Value Check", "step_type": "Label", "adapter": "None Adapter"},
+    {"step_no": "2_16", "step": "main", "test_project": "4.0 Read FF Air Sensor Value", "step_type": "NumericLimitTest", "adapter": "None Adapter", "equipment": "SignalAcquisition"},
 
-    {"step_no": "2_17", "step": "main", "test_project": "16.Write FCT OK", "step_type": "Label"},
-    {"step_no": "2_18", "step": "main", "test_project": "16.0 Write FCT PASS", "step_type": "StringValueTest", "equipment": "Protocal"},
+    {"step_no": "2_17", "step": "main", "test_project": "16.Write FCT OK", "step_type": "Label", "adapter": "None Adapter"},
+    {"step_no": "2_18", "step": "main", "test_project": "16.0 Write FCT PASS", "step_type": "StringValueTest", "adapter": "G Flexible VI Adapter", "equipment": "Protocal"},
 
-    {"step_no": "3_1", "step": "cleanup", "test_project": "断开所有继电器", "step_type": "PassFailTest", "equipment": "IOControl"},
-    {"step_no": "3_2", "step": "cleanup", "test_project": "Wait", "step_type": "NI_Wait"}
+    {"step_no": "3_1", "step": "cleanup", "test_project": "断开所有继电器", "step_type": "PassFailTest", "adapter": "G Flexible VI Adapter", "equipment": "IOControl"},
+    {"step_no": "3_2", "step": "cleanup", "test_project": "Wait", "step_type": "NI_Wait", "adapter": "None Adapter"}
   ]
 }
 ```

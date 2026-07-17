@@ -14,7 +14,7 @@ class ParsedTestCase:
         D  description        E  step_type          F  instrument_vi
         G  limits             H  usl                I  lsl
         J  unit               K  format             L  run_mode
-        M  wait_time          N  adapter            O  additional_results
+        M  wait_seconds       N  adapter            O  additional_results
         P  settings           Q  comments           R  input_signals
         S  output_loads       T  precondition       U  vi_path / command
         V  test_point         W  measurement_value  X  precision
@@ -30,7 +30,7 @@ class ParsedTestCase:
     unit: str = ""                    # J: unit, e.g. "Vdc"
     format: str = ""                  # K: format, e.g. "%.2f"
     run_mode: str = ""                # L: run mode, e.g. "Skip"
-    wait_time: str = ""               # M: wait(s), e.g. "0.1"
+    wait_seconds: str = ""               # M: wait(s), e.g. "0.1"
     adapter: str = ""                 # N: adapter name
     additional_results: str = ""      # O: additional results (ResStr, AR.Parms)
     settings: str = ""                # P: PreExpr/StatusExpr/PostExpr/etc.

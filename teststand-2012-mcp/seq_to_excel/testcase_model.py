@@ -34,7 +34,7 @@ class TestCase:
     unit: str = ""              # unit column
     format: str = ""            # format column
     run_mode: str = ""          # run mode column (e.g., Skip, Normal)
-    wait_time: str = ""         # wait(s) column
+    wait_seconds: str = ""         # wait(s) column
     additional_results: str = "" # additional results column
     settings: str = ""          # settings column
     comments: str = ""          # comments column

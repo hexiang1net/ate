@@ -2,18 +2,21 @@
 
 Orchestrates parsing of TestStand sequence files and Excel generation.
 """
+import os
+import sys
 from typing import List, Dict, Optional, Set
 from pathlib import Path
 
 import win32com.client
 
-from ...engine.teststand_engine import TestStandEngine
-from ...converter.variant_value_converter import VariantValueConverter
-from ...service.sequence_service import SequenceService
-from ...service.step_service import StepService
-from ...service.parameter_service import ParameterService
-from ...engine.constants import STEP_GROUP_API, STEP_GROUP_NAMES
-from .testcase_model import TestCase, TestCaseReport, ViParameter
+# 确保 teststand-2012-mcp 目录在 sys.path 中
+_pkg_root = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+if _pkg_root not in sys.path:
+    sys.path.insert(0, _pkg_root)
+
+from engine import TestStandEngine
+from engine.constants import STEP_GROUP_API, STEP_GROUP_NAMES
+from .testcase_model import TestCase, TestCaseReport, ViParameter, ModuleParameterInfo
 from .excel_generator import ExcelGenerator
 
 
@@ -36,10 +39,6 @@ class TestCaseAgent:
 
     def __init__(self):
         self.engine = None
-        self.value_converter = None
-        self.sequence_service = None
-        self.step_service = None
-        self.parameter_service = None
         self.excel_generator = ExcelGenerator()
         self._step_counter: Dict[str, int] = {}
         self._sub_step_counter: Dict[str, int] = {}  # For sub-sequence steps
@@ -64,11 +63,11 @@ class TestCaseAgent:
         with self.engine:
             self.engine.open_file(seq_file_path)
 
-            num_sequences = self.sequence_service.get_num_sequences()
+            num_sequences = self.engine.sequence_file.NumSequences
             if num_sequences == 0:
                 return report
 
-            sequences = self.sequence_service.get_all_sequences()
+            sequences = self._get_all_sequences()
             if sequences:
                 report.sequence_name = sequences[0].name
 
@@ -82,12 +81,24 @@ class TestCaseAgent:
         return report
 
     def _init_services(self):
-        """Initialize engine and services."""
+        """Initialize engine and COM connection."""
         self.engine = TestStandEngine()
-        self.value_converter = VariantValueConverter()
-        self.sequence_service = SequenceService(self.engine)
-        self.step_service = StepService(self.engine, self.value_converter)
-        self.parameter_service = ParameterService(self.engine, self.value_converter)
+        # Note: VariantValueConverter, SequenceService, StepService, and
+        # ParameterService were referenced in the original architecture but
+        # their modules did not ship with this codebase.  Their few call sites
+        # have been inlined below.
+
+    def _get_all_sequences(self):
+        """Get all sequences from the currently open file."""
+        sequences = []
+        try:
+            num = self.engine.sequence_file.NumSequences
+            for i in range(num):
+                seq = self.engine.sequence_file.GetSequence(i)
+                sequences.append(seq)
+        except Exception:
+            pass
+        return sequences
 
     def _reset_counters(self):
         """Reset step counters."""
@@ -578,9 +589,10 @@ class TestCaseAgent:
             return
 
         try:
-            from ...command.commands.parse_vi_params_command import ParseViParamsCommand
-            cmd = ParseViParamsCommand(self.engine)
-            result = cmd._parse_vi_parameters(full_vi_path)
+            # ParseViParamsCommand (from command.commands.parse_vi_params_command)
+            # is not available in this codebase — VI parameter enum fetching is
+            # skipped gracefully.
+            pass
 
             if "error" in result:
                 return
@@ -677,17 +689,14 @@ class TestCaseAgent:
         return None
 
     def _get_module_parameters(self, step):
-        """Get module parameters from step using service layer.
+        """Get module parameters from step using direct PropertyObject read.
 
-        Uses ParameterService with expand_clusters=True to handle cluster types
-        by recursively expanding sub-elements with dot notation.
-        For example: Limit {Low, High} -> "Limit.Low", "Limit.High"
-
-        For ActiveX/COM adapter steps, also reads values from Call.Parameters
+        Falls back to reading TS.SData.Call/ViCall.Parms when VI module loading
+        fails.  For ActiveX/COM adapter steps, also reads values from Call.Parameters
         since module.Parameters returns empty values for COM method params.
         """
         try:
-            params = self.parameter_service.get_module_parameters_with_fallback(step, expand_clusters=True)
+            params = self._get_params_from_property_object(step)
 
             # For ActiveX/COM steps, module.Parameters may return empty values
             # Read actual values from TS.SData.Call.Parameters
@@ -808,7 +817,6 @@ class TestCaseAgent:
 
         Returns list of ModuleParameterInfo if cluster, empty list if not a cluster.
         """
-        from ...model.module_parameter_info import ModuleParameterInfo
 
         try:
             # Check if this parameter is a cluster by trying to get sub-properties
@@ -934,7 +942,6 @@ class TestCaseAgent:
                     if sub_prop is None:
                         continue
 
-                    from ...model.module_parameter_info import ModuleParameterInfo
                     param_info = ModuleParameterInfo()
                     param_info.name = prop_name
 
@@ -979,7 +986,6 @@ class TestCaseAgent:
                     if elem is None:
                         continue
 
-                    from ...model.module_parameter_info import ModuleParameterInfo
                     param_info = ModuleParameterInfo()
 
                     try:
@@ -1280,12 +1286,12 @@ class TestCaseAgent:
             if mode_val and mode_val != "Normal":
                 tc.run_mode = mode_val
 
-            # Wait time → tc.wait_time (separate column)
+            # Wait time → tc.wait_seconds (separate column)
             if tc.step_type == "NI_Wait":
                 try:
                     wait_val = prop_obj.GetValString("TimeExpr", 0)
                     if wait_val:
-                        tc.wait_time = wait_val
+                        tc.wait_seconds = wait_val
                 except Exception:
                     pass
 

@@ -1,9 +1,16 @@
 """文档解析生成测试计划 - 主入口。"""
 import logging
+import os
+import sys
 from typing import Optional
 
-from ..seq_to_excel.testcase_model import TestCaseReport
-from ..seq_to_excel.excel_generator import ExcelGenerator
+# 确保 teststand-2012-mcp 目录在 sys.path 中（因目录名含 - 无法作为包名）
+_pkg_root = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+if _pkg_root not in sys.path:
+    sys.path.insert(0, _pkg_root)
+
+from seq_to_excel.testcase_model import TestCaseReport
+from seq_to_excel.excel_generator import ExcelGenerator
 from .doc_reader import read_document
 from .llm_client import create_llm_client
 from .prompt_builder import build_prompt, build_multimodal_prompt, parse_llm_response

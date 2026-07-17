@@ -1,8 +1,15 @@
 """将 LLM 返回的 JSON 解析为 TestCase 模型。"""
 import logging
+import os
+import sys
 from typing import List
 
-from ..seq_to_excel.testcase_model import TestCase, TestCaseReport, VariableInfo
+# 确保 teststand-2012-mcp 目录在 sys.path 中
+_pkg_root = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+if _pkg_root not in sys.path:
+    sys.path.insert(0, _pkg_root)
+
+from seq_to_excel.testcase_model import TestCase, TestCaseReport, VariableInfo
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +26,7 @@ _FIELD_MAP = {
     "unit": "unit",
     "format": "format",
     "run_mode": "run_mode",
-    "wait_time": "wait_time",
+    "wait_seconds": "wait_seconds",
     "adapter": "adapter",
     "additional_results": "additional_results",
     "settings": "settings",

@@ -12,4 +12,10 @@ STEP_GROUP_API = {
     2: 1,
 }
 
+STEP_GROUP_NAMES = {
+    0: "Main",
+    1: "Setup",
+    2: "Cleanup",
+}
+
 STEP_TYPE_SEQUENCE_CALL = "SequenceCall"

@@ -1,10 +1,15 @@
 """CLI entry point for ATE test case generation agent."""
+import os
 import sys
 import argparse
 from pathlib import Path
 
+# 确保 teststand-2012-mcp 目录在 sys.path 中
+_pkg_root = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+if _pkg_root not in sys.path:
+    sys.path.insert(0, _pkg_root)
+
 from .testcase_agent import TestCaseAgent
-from ...exception.engine_exception import EngineException
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -70,12 +75,6 @@ def main():
 
         sys.exit(0)
 
-    except EngineException as e:
-        print(f"TestStand engine error: {e}")
-        if args.verbose:
-            import traceback
-            traceback.print_exc()
-        sys.exit(1)
     except Exception as e:
         print(f"Unexpected error: {e}")
         if args.verbose:

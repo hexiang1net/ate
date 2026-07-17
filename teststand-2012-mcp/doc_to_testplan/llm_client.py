@@ -160,7 +160,7 @@ def build_image_content_block(image_bytes: bytes, media_type: str, provider: str
 
 _DEFAULTS = {
     "provider": "Xiaomi MiMo",
-    "model": "mimo-v2.5-pro",
+    "model": "mimo-v2.5",
 }
 
 

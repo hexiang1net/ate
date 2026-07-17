@@ -1,15 +1,21 @@
-"""POST 接口: Excel → TestStand seq 文件转换。
+"""Flask API 服务: Excel ↔ TestStand seq + 文档 → 测试计划 Excel。
 
-启动:  pip install flask pymysql openpyxl && python api_server.py
-调用:  curl -X POST http://localhost:5050/api/run
-      curl -X POST http://localhost:5050/api/addLog -H "Content-Type: application/json" -d "{\"plan_id\":\"xxx\",\"create_by\":\"admin\"}"
-查询:  curl http://localhost:5050/api/status/<task_id>
+启动:  pip install -r requirements_api.txt && python api_server.py
+
+端点:
+  POST /api/run               plan_id 下载 Excel → 生成 .seq
+  POST /api/addLog            写日志 → 下载 Excel → 生成 .seq
+  POST /api/doc-to-testplan   文档路径 → 生成测试计划 Excel
+  GET  /api/status/<task_id>  查询任务状态
+  GET  /api/tasks             列出所有任务
+  GET  /api/files             列出所有产出文件
+  GET  /api/files/<task_id>   下载任务产出文件
+  POST /api/push/<task_id>    推送 .seq 文件到 GitHub
 """
 
 import logging
 import os
 import re
-import sqlite3
 import subprocess
 import sys
 import threading
@@ -19,7 +25,15 @@ from typing import Any
 
 import pymysql
 import requests
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify, send_file
+
+# 加载 .env 配置（从 teststand-2012-mcp/doc_to_testplan/.env）
+_dotenv_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "teststand-2012-mcp", "doc_to_testplan", ".env",
+)
+load_dotenv(_dotenv_path)
 
 # 添加 excel_to_seq 所在目录到 sys.path
 _EXCEL_TO_SEQ_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "teststand-2012-mcp")
@@ -27,6 +41,7 @@ if _EXCEL_TO_SEQ_DIR not in sys.path:
     sys.path.insert(0, _EXCEL_TO_SEQ_DIR)
 
 from excel_to_seq import ExcelParser, SeqGenerator
+from doc_to_testplan import TestPlanGenerator
 
 app = Flask(__name__)
 
@@ -63,6 +78,61 @@ def get_db() -> pymysql.Connection:
 # ---- 任务状态存储 ----
 tasks: dict[str, dict[str, Any]] = {}
 lock = threading.Lock()
+
+
+def _ensure_output_dir() -> None:
+    """确保 OUTPUT_DIR 存在。"""
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+
+def _find_file_in_output(task_id: str) -> str | None:
+    """在 OUTPUT_DIR 中精确匹配 task_id (文件名前缀) 的文件, 返回完整路径或 None。
+
+    匹配规则: 文件名(不含扩展名)以 task_id 开头，避免 8 位 uuid 子串误匹配。
+    """
+    if not os.path.isdir(OUTPUT_DIR):
+        return None
+    try:
+        for f in os.listdir(OUTPUT_DIR):
+            name_no_ext, ext = os.path.splitext(f)
+            if name_no_ext == task_id or name_no_ext.startswith(task_id + "_"):
+                return os.path.join(OUTPUT_DIR, f)
+    except OSError:
+        pass
+    return None
+
+
+def _build_orphan_record(filepath: str) -> dict:
+    """从磁盘文件构建任务记录(用于内存中不存在该任务的情况)。"""
+    fname = os.path.basename(filepath)
+    name_no_ext = os.path.splitext(fname)[0]
+    stat = os.stat(filepath)
+    return {
+        "id": name_no_ext,
+        "status": "completed",
+        "seq_path": filepath,
+        "seq_name": fname,
+        "created_at": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+        "finished_at": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+        "_orphan": True,
+    }
+
+
+def _recover_tasks_from_disk() -> None:
+    """启动时从 OUTPUT_DIR 恢复已有文件的任务记录。"""
+    if not os.path.isdir(OUTPUT_DIR):
+        return
+    try:
+        for f in os.listdir(OUTPUT_DIR):
+            if f.endswith(".seq") or f.endswith("_TestPlan.xlsx"):
+                fp = os.path.join(OUTPUT_DIR, f)
+                name_no_ext = os.path.splitext(f)[0]
+                if name_no_ext not in tasks:
+                    tasks[name_no_ext] = _build_orphan_record(fp)
+        logger.info("从磁盘恢复了 %d 个历史任务",
+                     sum(1 for t in tasks.values() if t.get("_orphan")))
+    except OSError:
+        logger.exception("从磁盘恢复任务时出错")
 
 
 def _update_log_end(log_id: str) -> None:
@@ -211,6 +281,83 @@ def _start_excel_to_seq_task(excel_path: str, seq_name: str, log_id: str = "") -
     return task_id
 
 
+def run_doc_to_testplan(
+    task_id: str,
+    doc_path: str,
+    output_name: str,
+    provider: str | None = None,
+    model: str | None = None,
+    use_images: bool = True,
+) -> None:
+    """在后台线程中执行文档 → testplan Excel 转换。"""
+    logger.info("run_doc_to_testplan 入参: task_id=%s, doc_path=%s", task_id, doc_path)
+    with lock:
+        tasks[task_id]["status"] = "running"
+        tasks[task_id]["started_at"] = datetime.now().isoformat()
+
+    try:
+        output_path = os.path.join(OUTPUT_DIR, output_name)
+        generator = TestPlanGenerator()
+        report = generator.generate(
+            doc_path=doc_path,
+            output_xlsx=output_path,
+            provider=provider,
+            model=model,
+            verbose=False,
+            use_images=use_images,
+        )
+        logger.info("testplan 生成完成: task_id=%s, test_cases=%d",
+                     task_id, len(report.test_cases))
+
+        with lock:
+            tasks[task_id]["status"] = "completed"
+            tasks[task_id]["output_path"] = output_path
+            tasks[task_id]["output_name"] = output_name
+            tasks[task_id]["test_case_count"] = len(report.test_cases)
+            tasks[task_id]["finished_at"] = datetime.now().isoformat()
+
+    except Exception as exc:
+        logger.exception("run_doc_to_testplan 异常: task_id=%s, error=%s", task_id, exc)
+        with lock:
+            tasks[task_id]["status"] = "error"
+            tasks[task_id]["error"] = str(exc)
+            tasks[task_id]["finished_at"] = datetime.now().isoformat()
+
+
+def _start_doc_to_testplan_task(
+    doc_path: str,
+    output_name: str,
+    provider: str | None = None,
+    model: str | None = None,
+    use_images: bool = True,
+) -> str:
+    """启动文档→testplan 任务, 返回 task_id。"""
+    logger.info("_start_doc_to_testplan_task 入参: doc_path=%s", doc_path)
+
+    task_id = str(uuid.uuid4())[:8]
+
+    with lock:
+        tasks[task_id] = {
+            "id": task_id,
+            "status": "pending",
+            "doc_path": doc_path,
+            "output_name": output_name,
+            "provider": provider,
+            "model": model,
+            "use_images": use_images,
+            "created_at": datetime.now().isoformat(),
+        }
+
+    thread = threading.Thread(
+        target=run_doc_to_testplan,
+        args=(task_id, doc_path, output_name, provider, model, use_images),
+        daemon=True,
+    )
+    thread.start()
+    logger.info("_start_doc_to_testplan_task 出参: task_id=%s", task_id)
+    return task_id
+
+
 @app.route("/api/run", methods=["POST"])
 def run() -> tuple[Any, int]:
     """POST /api/run — 接收 plan_id，下载 Excel 并启动转换任务。
@@ -244,6 +391,66 @@ def run() -> tuple[Any, int]:
     task_id = _start_excel_to_seq_task(file_name, seq_name)
 
     return jsonify({"task_id": task_id}), 202
+
+
+@app.route("/api/doc-to-testplan", methods=["POST"])
+def doc_to_testplan() -> tuple[Any, int]:
+    """POST /api/doc-to-testplan — 上传测试文档或指定路径，生成测试计划 Excel。
+
+    方式 1 — 文件上传 (multipart/form-data):
+      file:        测试文档 (.docx/.pdf/.xlsx/.md/.txt 等)
+      provider:    LLM 提供商 (可选, 默认 claude)
+      model:       模型名称 (可选)
+      use_images:  是否提取图片 (可选, 默认 true)
+
+    方式 2 — 服务器路径 (JSON, 兼容旧版):
+      { "doc_path": "D:\\docs\\test_spec.docx", "provider": "claude", ... }
+
+    Response:  {"task_id": "xxx", "output": "xxx_TestPlan.xlsx"}
+    """
+    _ensure_output_dir()
+    provider: str | None = None
+    model: str | None = None
+    use_images: bool = True
+    doc_path: str = ""
+    doc_name: str = ""
+
+    # ── 方式 1: 文件上传 (multipart) ──
+    uploaded = request.files.get("file")
+    if uploaded and uploaded.filename:
+        safe_name = f"upload_{str(uuid.uuid4())[:8]}_{uploaded.filename}"
+        save_path = os.path.join(OUTPUT_DIR, safe_name)
+        uploaded.save(save_path)
+        doc_path = save_path
+        doc_name = os.path.splitext(uploaded.filename)[0]
+        provider = request.form.get("provider") or None
+        model = request.form.get("model") or None
+        use_images = request.form.get("use_images", "true").lower() in ("true", "1")
+    else:
+        # ── 方式 2: JSON body (doc_path, 兼容旧版) ──
+        data: dict[str, str] = request.get_json(silent=True) or {}
+        doc_path = data.get("doc_path", "")
+        if not doc_path:
+            return jsonify({"error": "请上传文件 (file) 或提供 doc_path"}), 400
+        if not os.path.isfile(doc_path):
+            return jsonify({"error": f"文档不存在: {doc_path}"}), 400
+        provider = data.get("provider")
+        model = data.get("model")
+        use_images = data.get("use_images", True)
+        if not isinstance(use_images, bool):
+            use_images = True
+        doc_name = os.path.splitext(os.path.basename(doc_path))[0]
+
+    output_name = f"{doc_name}_TestPlan.xlsx"
+    task_id = _start_doc_to_testplan_task(
+        doc_path=doc_path,
+        output_name=output_name,
+        provider=provider,
+        model=model,
+        use_images=use_images,
+    )
+
+    return jsonify({"task_id": task_id, "output": output_name}), 202
 
 
 @app.route("/api/addLog", methods=["POST"])
@@ -327,12 +534,23 @@ def add_log() -> tuple[Any, int]:
 def _build_status_response(task: dict) -> dict:
     """构建带文件信息的任务状态响应。"""
     resp = dict(task)
+
+    # Excel→seq 任务: seq_path
     if task.get("status") == "completed" and task.get("seq_path"):
-        seq_path = task["seq_path"]
-        if os.path.isfile(seq_path):
-            stat = os.stat(seq_path)
-            resp["fileName"] = os.path.basename(seq_path)
+        fpath = task["seq_path"]
+        if os.path.isfile(fpath):
+            stat = os.stat(fpath)
+            resp["fileName"] = os.path.basename(fpath)
             resp["fileSize"] = stat.st_size
+
+    # 文档→testplan 任务: output_path
+    if task.get("status") == "completed" and task.get("output_path"):
+        fpath = task["output_path"]
+        if os.path.isfile(fpath):
+            stat = os.stat(fpath)
+            resp["fileName"] = os.path.basename(fpath)
+            resp["fileSize"] = stat.st_size
+
     return resp
 
 
@@ -343,6 +561,10 @@ def status(task_id: str) -> tuple[Any, int]:
         task = tasks.get(task_id)
 
     if task is None:
+        # 内存中找不到时, 从 OUTPUT_DIR 扫描匹配文件
+        seq_path = _find_file_in_output(task_id)
+        if seq_path:
+            return jsonify(_build_status_response(_build_orphan_record(seq_path))), 200
         return jsonify({"error": "任务不存在"}), 404
 
     return jsonify(_build_status_response(task)), 200
@@ -363,27 +585,31 @@ def list_files():
         seen = set()
         for t in tasks.values():
             seq_path = t.get("seq_path", "")
+            out_path = t.get("output_path", "")
+            # 优先使用实际存在的文件路径
+            file_path = seq_path if os.path.isfile(seq_path) else (out_path if os.path.isfile(out_path) else "")
             rec = {
                 "taskId": t["id"],
                 "status": t["status"],
                 "createTime": t.get("created_at", ""),
             }
-            if seq_path and os.path.isfile(seq_path):
-                rec["fileName"] = os.path.basename(seq_path)
-                rec["fileSize"] = os.path.getsize(seq_path)
+            if file_path:
+                rec["fileName"] = os.path.basename(file_path)
+                rec["fileSize"] = os.path.getsize(file_path)
                 seen.add(rec["fileName"])
             else:
                 rec["fileName"] = ""
                 rec["fileSize"] = 0
             records.append(rec)
 
-        # 兜底：扫描 OUTPUT_DIR 中未被任务记录覆盖的 .seq 文件
+        # 兜底：扫描 OUTPUT_DIR 中未被任务记录覆盖的 .seq / .xlsx 文件
         for f in sorted(os.listdir(OUTPUT_DIR), reverse=True):
-            if f.endswith(".seq") and f not in seen:
+            if (f.endswith(".seq") or f.endswith("_TestPlan.xlsx")) and f not in seen:
                 fp = os.path.join(OUTPUT_DIR, f)
+                name_no_ext = os.path.splitext(f)[0]
                 records.append({
-                    "taskId": "",
-                    "status": "unknown",
+                    "taskId": name_no_ext,
+                    "status": "completed",
                     "createTime": datetime.fromtimestamp(os.path.getmtime(fp)).isoformat(),
                     "fileName": f,
                     "fileSize": os.path.getsize(fp),
@@ -394,18 +620,23 @@ def list_files():
 
 @app.route("/api/files/<task_id>", methods=["GET"])
 def get_file(task_id: str) -> tuple[Any, int]:
-    """GET /api/files/<task_id> — 下载 .seq 文件二进制流。"""
+    """GET /api/files/<task_id> — 下载任务产出文件。"""
     with lock:
         task = tasks.get(task_id)
 
+    # 内存中找不到时, 从 OUTPUT_DIR 扫描匹配文件
     if task is None:
+        seq_path = _find_file_in_output(task_id)
+        if seq_path:
+            return send_file(seq_path, as_attachment=True, download_name=os.path.basename(seq_path))
         return jsonify({"error": "任务不存在"}), 404
 
-    seq_path = task.get("seq_path")
-    if not seq_path or not os.path.isfile(seq_path):
+    # Excel→seq: seq_path; 文档→testplan: output_path
+    file_path = task.get("seq_path") or task.get("output_path")
+    if not file_path or not os.path.isfile(file_path):
         return jsonify({"error": "文件尚未生成或已被删除"}), 404
 
-    return send_file(seq_path, as_attachment=True, download_name=os.path.basename(seq_path))
+    return send_file(file_path, as_attachment=True, download_name=os.path.basename(file_path))
 
 
 @app.route("/api/push/<task_id>", methods=["POST"])
@@ -415,6 +646,21 @@ def push_to_git(task_id: str) -> tuple[Any, int]:
         task = tasks.get(task_id)
 
     if task is None:
+        # 内存中找不到时, 从 OUTPUT_DIR 扫描匹配文件
+        seq_path = _find_file_in_output(task_id)
+        if seq_path and os.path.isfile(seq_path):
+            seq_name = os.path.basename(seq_path)
+            ok = _git_commit_files(seq_name, "")
+            if ok:
+                return jsonify({
+                    "success": True,
+                    "message": f"已推送 {seq_name} 到 GitHub",
+                }), 200
+            else:
+                return jsonify({
+                    "success": False,
+                    "error": f"推送 {seq_name} 失败，详见 api_server.log",
+                }), 500
         return jsonify({"error": "任务不存在"}), 404
 
     if task["status"] != "completed":
@@ -445,4 +691,6 @@ def push_to_git(task_id: str) -> tuple[Any, int]:
 
 
 if __name__ == "__main__":
+    _ensure_output_dir()
+    _recover_tasks_from_disk()
     app.run(host="0.0.0.0", port=5050, debug=False)

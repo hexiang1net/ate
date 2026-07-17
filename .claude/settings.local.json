@@ -38,5 +38,9 @@
         "PYTHONIOENCODING": "utf-8"
       }
     }
-  }
+  },
+  "enabledMcpjsonServers": [
+    "teststand-2012",
+    "jeecg-mysql"
+  ]
 }
